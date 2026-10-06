@@ -215,7 +215,7 @@ Guillermo Barrios del Valle
     </div>
 </div>
 
-  <p class="date">5 de octubre de 2026</p>
+  <p class="date">6 de octubre de 2026</p>
 </section>
 <section id="antes-de-empezar-abre-la-libreta-en-molab" class="slide level2 smaller">
 <h2>Antes de empezar: abre la libreta en molab</h2>
@@ -224,15 +224,15 @@ Guillermo Barrios del Valle
 <p>Hoy trabajamos en <strong>molab</strong>: marimo en la nube, <strong>sin instalar nada</strong>. Solo necesitas una cuenta de GitHub o de Google.</p>
 <p><a href="https://molab.marimo.io/github/AltamarMx/MiTecho_MisKwh_MiCO2/blob/main/notebooks/s1_fundamentos.py" class="btn-molab"><strong>Abrir la libreta en molab</strong></a></p>
 <ol type="1">
-<li>Entra a <a href="https://molab.marimo.io">molab.marimo.io</a> con tu cuenta.</li>
-<li>Abre el enlace o escanea el código.</li>
+<li><strong>Inicia sesión</strong> en <a href="https://molab.marimo.io">molab.marimo.io</a> (GitHub o Google).</li>
+<li>Abre el enlace o escanea el código y <strong>crea tu copia</strong> para ejecutar en la nube.</li>
 <li>molab monta el <strong>repositorio completo</strong>: la libreta, los datos, todo.</li>
 </ol>
 <div class="small">
-<p>La libreta es un archivo de Python puro (<code>notebooks/s1_fundamentos.py</code>) dentro del repositorio del taller.</p>
+<p>La libreta es un archivo de Python puro (<code>notebooks/s1_fundamentos.py</code>) dentro del repositorio del taller. Sin sesión corre en tu navegador en modo demo: funciona, pero sin salida a internet (usa los datos del repo).</p>
 </div>
 </div><div class="column" style="width:45%;">
-<div id="673a6559" class="cell" data-execution_count="1">
+<div id="11d5b2c5" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -432,7 +432,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="python-mínimo-1-variables-y-tipos" class="slide level2 solo-codigo">
 <h2>Python mínimo 1 · variables y tipos</h2>
-<div id="e3654f10" class="cell" data-execution_count="3">
+<div id="4b6a8338" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>potencia_panel <span class="op">=</span> <span class="dv">550</span>   <span class="co"># W, un panel típico</span></span>
 <span id="cb2-2"><a></a>eficiencia <span class="op">=</span> <span class="fl">0.20</span>      <span class="co"># fracción, sin unidades</span></span>
 <span id="cb2-3"><a></a>ciudad <span class="op">=</span> <span class="st">"Temixco"</span></span>
@@ -445,7 +445,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="python-mínimo-2-listas" class="slide level2 solo-codigo">
 <h2>Python mínimo 2 · listas</h2>
-<div id="7b44a4db" class="cell" data-execution_count="4">
+<div id="ac22e5f7" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>ciudades <span class="op">=</span> [<span class="st">"Temixco"</span>, <span class="st">"Mérida"</span>, <span class="st">"Tijuana"</span>, <span class="st">"La Paz"</span>]</span>
 <span id="cb4-2"><a></a>ciudades[<span class="dv">0</span>], ciudades[<span class="op">-</span><span class="dv">1</span>], <span class="bu">len</span>(ciudades)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
@@ -456,7 +456,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="python-mínimo-3-diccionarios" class="slide level2 solo-codigo">
 <h2>Python mínimo 3 · diccionarios</h2>
-<div id="5b53ceba" class="cell" data-execution_count="5">
+<div id="b5421a32" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>sitio <span class="op">=</span> {<span class="st">"nombre"</span>: <span class="st">"Temixco"</span>, <span class="st">"lat"</span>: <span class="fl">18.84</span>,</span>
 <span id="cb6-2"><a></a>         <span class="st">"lon"</span>: <span class="op">-</span><span class="fl">99.24</span>, <span class="st">"altitud"</span>: <span class="dv">1220</span>}</span>
 <span id="cb6-3"><a></a>sitio[<span class="st">"lat"</span>]</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
@@ -468,7 +468,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="python-mínimo-4-funciones" class="slide level2 solo-codigo">
 <h2>Python mínimo 4 · funciones</h2>
-<div id="b1f634fa" class="cell" data-execution_count="6">
+<div id="4be94666" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> kwh_mensuales(area_m2, hsp<span class="op">=</span><span class="fl">5.5</span>, eficiencia<span class="op">=</span><span class="fl">0.20</span>):</span>
 <span id="cb8-2"><a></a>    <span class="cf">return</span> area_m2 <span class="op">*</span> hsp <span class="op">*</span> eficiencia <span class="op">*</span> <span class="dv">30</span></span>
 <span id="cb8-3"><a></a></span>
@@ -489,7 +489,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="celda-1-las-herramientas" class="slide level2 solo-codigo">
 <h2>Celda 1 · Las herramientas</h2>
-<div id="e814d0f2" class="cell" data-execution_count="7">
+<div id="45d5c984" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb10-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb10-3"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -499,7 +499,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="celda-2-el-lugar" class="slide level2 solo-codigo">
 <h2>Celda 2 · El lugar</h2>
-<div id="95416542" class="cell" data-execution_count="8">
+<div id="d19882f8" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>temixco <span class="op">=</span> Location(latitude<span class="op">=</span><span class="fl">18.84</span>, longitude<span class="op">=-</span><span class="fl">99.24</span>,</span>
 <span id="cb11-2"><a></a>                   tz<span class="op">=</span><span class="st">"America/Mexico_City"</span>,</span>
 <span id="cb11-3"><a></a>                   altitude<span class="op">=</span><span class="dv">1220</span>, name<span class="op">=</span><span class="st">"Temixco"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
@@ -508,7 +508,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="celda-3-el-cuándo" class="slide level2 solo-codigo">
 <h2>Celda 3 · El cuándo</h2>
-<div id="4465f85f" class="cell" data-execution_count="9">
+<div id="8818f450" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>horas <span class="op">=</span> pd.date_range(<span class="st">"2026-03-21"</span>, <span class="st">"2026-03-22"</span>,</span>
 <span id="cb12-2"><a></a>                      freq<span class="op">=</span><span class="st">"10min"</span>, tz<span class="op">=</span>temixco.tz)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -516,7 +516,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="celda-4-el-cielo-despejado" class="slide level2 solo-codigo">
 <h2>Celda 4 · El cielo despejado</h2>
-<div id="c1b636f5" class="cell" data-execution_count="10">
+<div id="22428719" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>cielo <span class="op">=</span> temixco.get_clearsky(horas, model<span class="op">=</span><span class="st">"ineichen"</span>,</span>
 <span id="cb13-2"><a></a>                             linke_turbidity<span class="op">=</span><span class="fl">3.0</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -524,7 +524,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="celda-5-la-gráfica" class="slide level2 solo-codigo">
 <h2>Celda 5 · La gráfica</h2>
-<div id="8852d02e" class="cell" data-execution_count="11">
+<div id="cf6d8eeb" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">2.6</span>))</span>
 <span id="cb14-2"><a></a>cielo[[<span class="st">"ghi"</span>, <span class="st">"dni"</span>, <span class="st">"dhi"</span>]].plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb14-3"><a></a>ax.set_ylabel(<span class="st">"Irradiancia (W/m²)"</span>)</span>
@@ -543,7 +543,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="la-tabla-cielo-un-renglón-por-instante-tres-columnas" class="slide level2 solo-codigo">
 <h2>La tabla <code>cielo</code>: un renglón por instante, tres columnas</h2>
-<div id="fdd1109c" class="cell" data-execution_count="12">
+<div id="f7d96480" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>dia <span class="op">=</span> cielo.loc[<span class="st">"2026-03-21 06:00"</span>:<span class="st">"2026-03-21 18:00"</span>]</span>
 <span id="cb15-2"><a></a>dia.iloc[::<span class="dv">18</span>].<span class="bu">round</span>(<span class="dv">0</span>)     <span class="co"># un renglón cada 3 horas</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
@@ -612,7 +612,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="columna-ghi-global-horizontal" class="slide level2 solo-codigo">
 <h2>Columna <code>ghi</code> · global horizontal</h2>
-<div id="64e9a561" class="cell" data-execution_count="13">
+<div id="5e225cbd" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>ax <span class="op">=</span> cielo[<span class="st">"ghi"</span>].plot(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">2.6</span>), lw<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb16-2"><a></a>ax.set_ylabel(<span class="st">"GHI (W/m²)"</span>)<span class="op">;</span> ax.set_ylim(<span class="dv">0</span>, <span class="dv">1100</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -627,7 +627,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="columna-dni-directa-normal" class="slide level2 solo-codigo">
 <h2>Columna <code>dni</code> · directa normal</h2>
-<div id="ff000f5e" class="cell" data-execution_count="14">
+<div id="c5cb55ec" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>ax <span class="op">=</span> cielo[<span class="st">"dni"</span>].plot(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">2.6</span>), lw<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb17-2"><a></a>ax.set_ylabel(<span class="st">"DNI (W/m²)"</span>)<span class="op">;</span> ax.set_ylim(<span class="dv">0</span>, <span class="dv">1100</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -642,7 +642,7 @@ Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, More
 </section>
 <section id="columna-dhi-difusa-horizontal" class="slide level2 solo-codigo">
 <h2>Columna <code>dhi</code> · difusa horizontal</h2>
-<div id="351bb21a" class="cell" data-execution_count="15">
+<div id="760ac683" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>ax <span class="op">=</span> cielo[<span class="st">"dhi"</span>].plot(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">2.6</span>), lw<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb18-2"><a></a>ax.set_ylabel(<span class="st">"DHI (W/m²)"</span>)<span class="op">;</span> ax.set_ylim(<span class="dv">0</span>, <span class="dv">1100</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -681,7 +681,7 @@ G_{\text{sup}} =
 <h2>Término 1 · Directa: <span class="math inline">\(\text{DNI}\cdot\cos\theta\)</span></h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div id="640242f7" class="cell" data-execution_count="16">
+<div id="6e5e68b0" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -796,7 +796,7 @@ G_{\text{sup}} =
 </section>
 <section id="celda-6-la-posición-del-sol" class="slide level2 solo-codigo">
 <h2>Celda 6 · La posición del Sol</h2>
-<div id="09797add" class="cell" data-execution_count="17">
+<div id="33a01c8f" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>sol <span class="op">=</span> temixco.get_solarposition(horas)</span>
 <span id="cb19-2"><a></a>angulos <span class="op">=</span> sol[[<span class="st">"apparent_zenith"</span>, <span class="st">"azimuth"</span>]]</span>
 <span id="cb19-3"><a></a>angulos.loc[dia.index[::<span class="dv">18</span>]].<span class="bu">round</span>(<span class="dv">1</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
@@ -860,7 +860,7 @@ G_{\text{sup}} =
 </section>
 <section id="cómo-se-usan-los-dos-ángulos" class="slide level2">
 <h2>Cómo se usan los dos ángulos</h2>
-<div id="280b53dd" class="cell" data-execution_count="18">
+<div id="d1b12b6d" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -874,7 +874,7 @@ G_{\text{sup}} =
 </section>
 <section id="celda-7-la-ecuación-en-pvlib" class="slide level2 solo-codigo">
 <h2>Celda 7 · La ecuación en pvlib</h2>
-<div id="719a7046" class="cell" data-execution_count="19">
+<div id="1046963b" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="im">from</span> pvlib <span class="im">import</span> irradiance</span>
 <span id="cb20-2"><a></a>pared <span class="op">=</span> irradiance.get_total_irradiance(</span>
 <span id="cb20-3"><a></a>    surface_tilt<span class="op">=</span><span class="dv">90</span>, surface_azimuth<span class="op">=</span><span class="dv">90</span>,</span>
@@ -888,7 +888,7 @@ G_{\text{sup}} =
 </section>
 <section id="la-tabla-pared-los-tres-términos-y-su-suma" class="slide level2 solo-codigo">
 <h2>La tabla <code>pared</code>: los tres términos y su suma</h2>
-<div id="42c836c2" class="cell" data-execution_count="20">
+<div id="b4081f97" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a>pared.loc[dia.index[::<span class="dv">18</span>]].<span class="bu">round</span>(<span class="dv">0</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <div>
@@ -973,7 +973,7 @@ G_{\text{sup}} =
 </section>
 <section id="energía-el-área-bajo-la-curva" class="slide level2">
 <h2>Energía: el área bajo la curva</h2>
-<div id="c080580a" class="cell" data-execution_count="21">
+<div id="6f194f2c" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -991,7 +991,7 @@ G_{\text{sup}} =
 </section>
 <section id="celda-8-la-energía-del-día" class="slide level2 solo-codigo">
 <h2>Celda 8 · La energía del día</h2>
-<div id="8d94995c" class="cell" data-execution_count="22">
+<div id="f31896e7" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a>dt_h <span class="op">=</span> <span class="dv">10</span> <span class="op">/</span> <span class="dv">60</span>                        <span class="co"># horas por renglón</span></span>
 <span id="cb22-2"><a></a>energia <span class="op">=</span> pared[<span class="st">"poa_global"</span>].<span class="bu">sum</span>() <span class="op">*</span> dt_h <span class="op">/</span> <span class="dv">1000</span></span>
 <span id="cb22-3"><a></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>energia<span class="sc">:.2f}</span><span class="ss"> kWh/m² en el día"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1003,7 +1003,7 @@ G_{\text{sup}} =
 </section>
 <section id="celda-9-cuatro-paredes" class="slide level2 solo-codigo">
 <h2>Celda 9 · Cuatro paredes</h2>
-<div id="3137fd67" class="cell" data-execution_count="23">
+<div id="2489d58b" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a>orientaciones <span class="op">=</span> {<span class="st">"Norte"</span>: <span class="dv">0</span>, <span class="st">"Este"</span>: <span class="dv">90</span>,</span>
 <span id="cb24-2"><a></a>                 <span class="st">"Sur"</span>: <span class="dv">180</span>, <span class="st">"Oeste"</span>: <span class="dv">270</span>}</span>
 <span id="cb24-3"><a></a>paredes <span class="op">=</span> {}</span>
@@ -1021,7 +1021,7 @@ G_{\text{sup}} =
 </section>
 <section id="celda-10-la-energía-de-cada-pared" class="slide level2 solo-codigo">
 <h2>Celda 10 · La energía de cada pared</h2>
-<div id="8b401f7c" class="cell" data-execution_count="24">
+<div id="ce1f4a64" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a>energias <span class="op">=</span> paredes.<span class="bu">sum</span>() <span class="op">*</span> dt_h <span class="op">/</span> <span class="dv">1000</span></span>
 <span id="cb25-2"><a></a>energias.<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="24">
@@ -1036,7 +1036,7 @@ dtype: float64</code></pre>
 </section>
 <section id="pared-al-este" class="slide level2">
 <h2>Pared al este</h2>
-<div id="761c3add" class="cell" data-execution_count="26">
+<div id="1a13edd6" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1049,7 +1049,7 @@ dtype: float64</code></pre>
 </section>
 <section id="pared-al-sur" class="slide level2">
 <h2>Pared al sur</h2>
-<div id="dc4f5df6" class="cell" data-execution_count="27">
+<div id="f8897c68" class="cell" data-execution_count="27">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1062,7 +1062,7 @@ dtype: float64</code></pre>
 </section>
 <section id="el-techo-le-gana-a-cualquier-pared" class="slide level2 solo-codigo">
 <h2>El techo le gana a cualquier pared</h2>
-<div id="da574a1d" class="cell" data-execution_count="28">
+<div id="624f9fc1" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a>techo20 <span class="op">=</span> irradiance.get_total_irradiance(</span>
 <span id="cb27-2"><a></a>    surface_tilt<span class="op">=</span><span class="dv">20</span>, surface_azimuth<span class="op">=</span><span class="dv">180</span>,</span>
 <span id="cb27-3"><a></a>    solar_zenith<span class="op">=</span>sol[<span class="st">"apparent_zenith"</span>],</span>
@@ -1079,7 +1079,7 @@ dtype: float64</code></pre>
 </section>
 <section id="trayectoria-aparente-del-sol-el-mapa-completo" class="slide level2">
 <h2>Trayectoria aparente del Sol: el mapa completo</h2>
-<div id="c2422fd4" class="cell" data-execution_count="29">
+<div id="45c2da5f" class="cell" data-execution_count="29">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1111,7 +1111,7 @@ dtype: float64</code></pre>
 </section>
 <section id="celda-11-leer-un-archivo-epw" class="slide level2 solo-codigo">
 <h2>Celda 11 · Leer un archivo EPW</h2>
-<div id="4272be97" class="cell" data-execution_count="30">
+<div id="9c17eed4" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a><span class="im">from</span> pvlib <span class="im">import</span> iotools</span>
 <span id="cb29-2"><a></a>epw, meta_epw <span class="op">=</span> iotools.read_epw(<span class="st">"data/epw/temixco.epw"</span>,</span>
 <span id="cb29-3"><a></a>                                 coerce_year<span class="op">=</span><span class="dv">2026</span>)</span>
@@ -1174,7 +1174,7 @@ dtype: float64</code></pre>
 </section>
 <section id="el-año-completo-de-un-vistazo" class="slide level2">
 <h2>El año completo, de un vistazo</h2>
-<div id="200dafd5" class="cell" data-execution_count="31">
+<div id="333ba275" class="cell" data-execution_count="31">
 <details class="code-fold">
 <summary>Ver código</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a>diaria <span class="op">=</span> epw[<span class="st">"ghi"</span>].resample(<span class="st">"D"</span>).<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1000</span></span>
@@ -1197,7 +1197,7 @@ dtype: float64</code></pre>
 </section>
 <section id="celda-12-cualquier-localidad-una-línea-pvgis" class="slide level2 solo-codigo">
 <h2>Celda 12 · Cualquier localidad, una línea: PVGIS</h2>
-<div id="edd2fd5c" class="cell" data-execution_count="32">
+<div id="33b9288c" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a>tmy, meta <span class="op">=</span> iotools.get_pvgis_tmy(<span class="fl">18.84</span>, <span class="op">-</span><span class="fl">99.24</span>,</span>
 <span id="cb31-2"><a></a>                                  map_variables<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb31-3"><a></a>                                  roll_utc_offset<span class="op">=-</span><span class="dv">6</span>,</span>
@@ -1265,10 +1265,13 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>PVGIS (Comisión Europea) entrega el TMY de <strong>cualquier punto de América</strong>, derivado de satélite, sin registrarse. Ojo: lo entrega en <strong>UTC</strong>; <code>roll_utc_offset=-6</code> lo recorre a hora local. Si lo olvidas, tu sol sale a medianoche.</p>
+<div class="small">
+<p>Opción sin red (o en la versión de navegador, donde PVGIS está bloqueado): la libreta cae sola a la caché del repo, <code>data/tmy/temixco.csv</code>, generada con <code>scripts/precargar_tmy.py</code>. Mismo año típico.</p>
+</div>
 </section>
 <section id="las-nubes-mes-a-mes" class="slide level2">
 <h2>Las nubes, mes a mes</h2>
-<div id="92620847" class="cell" data-execution_count="33">
+<div id="db46697b" class="cell" data-execution_count="33">
 <details class="code-fold">
 <summary>Ver código</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a>cielo_anio <span class="op">=</span> temixco.get_clearsky(tmy.index, model<span class="op">=</span><span class="st">"ineichen"</span>,</span>
@@ -1301,7 +1304,7 @@ dtype: float64</code></pre>
 </section>
 <section id="celda-13-el-techo-hora-por-hora-todo-el-año" class="slide level2 solo-codigo">
 <h2>Celda 13 · El techo, hora por hora, todo el año</h2>
-<div id="207cfad7" class="cell" data-execution_count="35">
+<div id="5d15757c" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a></a>sol_tmy <span class="op">=</span> temixco.get_solarposition(tmy.index)</span>
 <span id="cb33-2"><a></a>techo <span class="op">=</span> irradiance.get_total_irradiance(</span>
 <span id="cb33-3"><a></a>    surface_tilt<span class="op">=</span><span class="dv">20</span>, surface_azimuth<span class="op">=</span><span class="dv">180</span>,</span>
@@ -1314,7 +1317,7 @@ dtype: float64</code></pre>
 </section>
 <section id="celda-14-del-sol-a-los-kwh-del-sistema" class="slide level2 solo-codigo">
 <h2>Celda 14 · Del sol a los kWh del sistema</h2>
-<div id="3c4877e9" class="cell" data-execution_count="36">
+<div id="9e6d73c3" class="cell" data-execution_count="36">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a>area <span class="op">=</span> <span class="dv">10</span>          <span class="co"># m² de paneles</span></span>
 <span id="cb34-2"><a></a>eficiencia <span class="op">=</span> <span class="fl">0.20</span>  <span class="co"># 20 %</span></span>
 <span id="cb34-3"><a></a>kwh_anio <span class="op">=</span> techo[<span class="st">"poa_global"</span>].<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1000</span> <span class="op">*</span> area <span class="op">*</span> eficiencia</span>
@@ -1327,7 +1330,7 @@ dtype: float64</code></pre>
 </section>
 <section id="el-número-mágico-revelado" class="slide level2 solo-codigo">
 <h2>El número mágico, revelado</h2>
-<div id="1af5f127" class="cell" data-execution_count="37">
+<div id="ac6ce31c" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a>hsp <span class="op">=</span> techo[<span class="st">"poa_global"</span>].<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1000</span> <span class="op">/</span> <span class="dv">365</span></span>
 <span id="cb36-2"><a></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>hsp<span class="sc">:.2f}</span><span class="ss"> horas solares pico promedio en Temixco"</span>)</span>
 <span id="cb36-3"><a></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>kwh_mensuales(<span class="dv">10</span>, hsp<span class="op">=</span>hsp)<span class="sc">:,.0f}</span><span class="ss"> kWh/mes con nuestra función"</span>)</span>
@@ -1342,7 +1345,7 @@ dtype: float64</code></pre>
 </section>
 <section id="la-cosecha-mes-a-mes" class="slide level2">
 <h2>La cosecha, mes a mes</h2>
-<div id="0c5ae3e7" class="cell" data-execution_count="38">
+<div id="c6479fe2" class="cell" data-execution_count="38">
 <details class="code-fold">
 <summary>Ver código</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a>kwh_mes <span class="op">=</span> techo[<span class="st">"poa_global"</span>].groupby(techo.index.month).<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1000</span> <span class="op">*</span> area <span class="op">*</span> eficiencia</span>

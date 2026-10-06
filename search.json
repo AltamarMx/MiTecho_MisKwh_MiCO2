@@ -4,7 +4,7 @@
     "href": "sesion1.html#antes-de-empezar-abre-la-libreta-en-molab",
     "title": "Mi techo, mis kWh, mi CO₂",
     "section": "Antes de empezar: abre la libreta en molab",
-    "text": "Antes de empezar: abre la libreta en molab\n\n\nHoy trabajamos en molab: marimo en la nube, sin instalar nada. Solo necesitas una cuenta de GitHub o de Google.\nAbrir la libreta en molab\n\nEntra a molab.marimo.io con tu cuenta.\nAbre el enlace o escanea el código.\nmolab monta el repositorio completo: la libreta, los datos, todo.\n\n\nLa libreta es un archivo de Python puro (notebooks/s1_fundamentos.py) dentro del repositorio del taller."
+    "text": "Antes de empezar: abre la libreta en molab\n\n\nHoy trabajamos en molab: marimo en la nube, sin instalar nada. Solo necesitas una cuenta de GitHub o de Google.\nAbrir la libreta en molab\n\nInicia sesión en molab.marimo.io (GitHub o Google).\nAbre el enlace o escanea el código y crea tu copia para ejecutar en la nube.\nmolab monta el repositorio completo: la libreta, los datos, todo.\n\n\nLa libreta es un archivo de Python puro (notebooks/s1_fundamentos.py) dentro del repositorio del taller. Sin sesión corre en tu navegador en modo demo: funciona, pero sin salida a internet (usa los datos del repo)."
   },
   {
     "objectID": "sesion1.html#el-taller-tres-sesiones-una-app",
@@ -277,7 +277,7 @@
     "href": "sesion1.html#celda-12-cualquier-localidad-una-línea-pvgis",
     "title": "Mi techo, mis kWh, mi CO₂",
     "section": "Celda 12 · Cualquier localidad, una línea: PVGIS",
-    "text": "Celda 12 · Cualquier localidad, una línea: PVGIS\n\ntmy, meta = iotools.get_pvgis_tmy(18.84, -99.24,\n                                  map_variables=True,\n                                  roll_utc_offset=-6,\n                                  coerce_year=2026)\ntmy[[\"ghi\", \"dni\", \"dhi\", \"temp_air\"]].head(3)\n\n\n\n\n\n\n\n\nghi\ndni\ndhi\ntemp_air\n\n\ntime(Etc/GMT+6)\n\n\n\n\n\n\n\n\n2026-01-01 00:00:00-06:00\n0.0\n0.0\n0.0\n17.46\n\n\n2026-01-01 01:00:00-06:00\n0.0\n0.0\n0.0\n16.87\n\n\n2026-01-01 02:00:00-06:00\n0.0\n0.0\n0.0\n14.13\n\n\n\n\n\n\n\nPVGIS (Comisión Europea) entrega el TMY de cualquier punto de América, derivado de satélite, sin registrarse. Ojo: lo entrega en UTC; roll_utc_offset=-6 lo recorre a hora local. Si lo olvidas, tu sol sale a medianoche."
+    "text": "Celda 12 · Cualquier localidad, una línea: PVGIS\n\ntmy, meta = iotools.get_pvgis_tmy(18.84, -99.24,\n                                  map_variables=True,\n                                  roll_utc_offset=-6,\n                                  coerce_year=2026)\ntmy[[\"ghi\", \"dni\", \"dhi\", \"temp_air\"]].head(3)\n\n\n\n\n\n\n\n\nghi\ndni\ndhi\ntemp_air\n\n\ntime(Etc/GMT+6)\n\n\n\n\n\n\n\n\n2026-01-01 00:00:00-06:00\n0.0\n0.0\n0.0\n17.46\n\n\n2026-01-01 01:00:00-06:00\n0.0\n0.0\n0.0\n16.87\n\n\n2026-01-01 02:00:00-06:00\n0.0\n0.0\n0.0\n14.13\n\n\n\n\n\n\n\nPVGIS (Comisión Europea) entrega el TMY de cualquier punto de América, derivado de satélite, sin registrarse. Ojo: lo entrega en UTC; roll_utc_offset=-6 lo recorre a hora local. Si lo olvidas, tu sol sale a medianoche.\n\nOpción sin red (o en la versión de navegador, donde PVGIS está bloqueado): la libreta cae sola a la caché del repo, data/tmy/temixco.csv, generada con scripts/precargar_tmy.py. Mismo año típico."
   },
   {
     "objectID": "sesion1.html#las-nubes-mes-a-mes",
