@@ -1,0 +1,359 @@
+[
+  {
+    "objectID": "sesion1.html#antes-de-empezar-abre-la-libreta-en-molab",
+    "href": "sesion1.html#antes-de-empezar-abre-la-libreta-en-molab",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Antes de empezar: abre la libreta en molab",
+    "text": "Antes de empezar: abre la libreta en molab\n\n\nHoy trabajamos en molab: marimo en la nube, sin instalar nada. Solo necesitas una cuenta de GitHub o de Google.\nAbrir la libreta en molab\n\nEntra a molab.marimo.io con tu cuenta.\nAbre el enlace o escanea el código.\nmolab monta el repositorio completo: la libreta, los datos, todo.\n\n\nLa libreta es un archivo de Python puro (notebooks/s1_fundamentos.py) dentro del repositorio del taller."
+  },
+  {
+    "objectID": "sesion1.html#el-taller-tres-sesiones-una-app",
+    "href": "sesion1.html#el-taller-tres-sesiones-una-app",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "El taller: tres sesiones, una app",
+    "text": "El taller: tres sesiones, una app\n\n\n\n\n\n\n\n\n\nSesión\nConstruyes\n\n\n\n\n1\nPython, marimo y la física del recurso solar\ntu primer modelo fotovoltaico: de la latitud a los kWh\n\n\n2\nDe la libreta a la app\nla app interactiva: sliders, menús y modo webapp\n\n\n3\nEl recibo y el CO₂\nlos 3 KPIs: kWh generados, $ ahorrados, kg de CO₂ evitados\n\n\n\n\nAl final te llevas una app web parametrizable, exportable como HTML y defendible en tu portafolio, hecha 100 % en Python: ni una línea de HTML ni de JavaScript.\n\n\n📄 Para la sesión 3: trae un recibo de CFE (el tuyo o el de tu casa). Lo vamos a convertir en datos."
+  },
+  {
+    "objectID": "sesion1.html#la-ruta-de-hoy",
+    "href": "sesion1.html#la-ruta-de-hoy",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "La ruta de hoy",
+    "text": "La ruta de hoy\n\nmolab y tu primera libreta (10 min)\n¿Por qué Python? (10 min)\nPython mínimo y las reglas de marimo (20 min)\nGeometría solar: del cielo a tu techo (30 min)\nDatos meteorológicos reales: EPW y PVGIS (25 min)\nTu primer modelo fotovoltaico (15 min)\nReproducibilidad, reto y cierre (10 min)\n\n\nFormato de todo el taller: lanzar la pregunta, esperar respuestas, avanzar para mostrar la nuestra."
+  },
+  {
+    "objectID": "sesion1.html#un-lenguaje-general-con-un-ecosistema-científico",
+    "href": "sesion1.html#un-lenguaje-general-con-un-ecosistema-científico",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Un lenguaje general con un ecosistema científico",
+    "text": "Un lenguaje general con un ecosistema científico\n\n¿Qué tiene Python que no tengan Excel, MATLAB o R?\n\n\n\n\nUn solo lenguaje para todo el flujo: adquisición, limpieza, modelado, visualización, reporte.\nEcosistema maduro: NumPy, pandas, Matplotlib, SciPy, scikit-learn, xarray.\nDominio de energía: pvlib, windpowerlib, PyPSA, oemof, pandapower.\n\n\n\nCódigo abierto: sin licencias, auditable, citable.\nComunidad enorme: la duda que tienes ya alguien la resolvió.\nPuente hacia HPC, la nube y el aprendizaje automático.\n\n\n\nPython no es la herramienta más rápida ni la más elegante: es la que conecta todo lo demás."
+  },
+  {
+    "objectID": "sesion1.html#ejemplo-la-irradiancia-de-un-día-despejado-en-8-líneas",
+    "href": "sesion1.html#ejemplo-la-irradiancia-de-un-día-despejado-en-8-líneas",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Ejemplo: la irradiancia de un día despejado, en 8 líneas",
+    "text": "Ejemplo: la irradiancia de un día despejado, en 8 líneas\n\n¿Cuántas líneas hacen falta para calcular y graficar la irradiancia de un día despejado en Temixco?\n\n\n\n\nVer código (pvlib + pandas + matplotlib)\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom pvlib.location import Location\n\ntemixco = Location(latitude=18.84, longitude=-99.24,\n                   tz=\"America/Mexico_City\", altitude=1220, name=\"Temixco\")\n\nhoras = pd.date_range(\"2026-03-21\", \"2026-03-22\", freq=\"10min\", tz=temixco.tz)\ncielo = temixco.get_clearsky(horas, model=\"ineichen\", linke_turbidity=3.0)\n\nfig, ax = plt.subplots(figsize=(9, 3.8))\ncielo[[\"ghi\", \"dni\", \"dhi\"]].plot(ax=ax, lw=2)\nax.set_ylabel(\"Irradiancia (W/m²)\")\nax.set_xlabel(\"Hora local\")\nax.set_title(\"Equinoccio de primavera · cielo despejado\")\nax.legend([\"GHI\", \"DNI\", \"DHI\"], frameon=False)\nax.grid(alpha=.3)\nplt.tight_layout()\n\n\n\n\n\n\n\n\nFigura 1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, Morelos."
+  },
+  {
+    "objectID": "sesion1.html#lo-que-acabamos-de-ver",
+    "href": "sesion1.html#lo-que-acabamos-de-ver",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Lo que acabamos de ver",
+    "text": "Lo que acabamos de ver\n\n8 líneas de código: ubicación → posición solar → modelo de cielo despejado → gráfica.\nCada paso es una biblioteca revisada por pares (pvlib nació en Sandia National Labs).\nEl resultado es reproducible: cualquier persona con este archivo obtiene la misma figura.\n\n\n\n\n\n\n\n\nPregunta para la audiencia\n\n\n¿Cuántas de sus hojas de cálculo podrían regenerarse hoy desde cero, sin intervención manual?"
+  },
+  {
+    "objectID": "sesion1.html#jupyter-vs-marimo-el-cuaderno-reactivo",
+    "href": "sesion1.html#jupyter-vs-marimo-el-cuaderno-reactivo",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Jupyter vs marimo: el cuaderno reactivo",
+    "text": "Jupyter vs marimo: el cuaderno reactivo\n\n\nJupyter (el cuaderno clásico)\n\nCorres las celdas a mano, en el orden que quieras.\nEstado oculto: ¿corriste la celda 5 antes que la 3? El cuaderno ya no dice la verdad.\nEl archivo .ipynb es JSON: difícil de leer y de versionar.\n\n\nmarimo (el cuaderno reactivo)\n\nCada celda es una función; el cuaderno es un grafo de dependencias.\nUna variable se define en una sola celda.\nCambias algo → se recalcula todo lo que depende de ello. No hay estado oculto.\nEl archivo es Python puro: corre como script, se versiona en git.\n\n\n\nEn la sesión 2 esto se vuelve superpoder: cada slider recalcula solo lo necesario, y la libreta ya es una app."
+  },
+  {
+    "objectID": "sesion1.html#python-mínimo-1-variables-y-tipos",
+    "href": "sesion1.html#python-mínimo-1-variables-y-tipos",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Python mínimo 1 · variables y tipos",
+    "text": "Python mínimo 1 · variables y tipos\n\npotencia_panel = 550   # W, un panel típico\neficiencia = 0.20      # fracción, sin unidades\nciudad = \"Temixco\"\ntype(potencia_panel), type(eficiencia), type(ciudad)\n\n(int, float, str)\n\n\nUna variable es un nombre pegado a un valor. El tipo (int, float, str) se lo da el valor, no tú. Los comentarios con # documentan las unidades: en energía, la mitad de los errores son de unidades."
+  },
+  {
+    "objectID": "sesion1.html#python-mínimo-2-listas",
+    "href": "sesion1.html#python-mínimo-2-listas",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Python mínimo 2 · listas",
+    "text": "Python mínimo 2 · listas\n\nciudades = [\"Temixco\", \"Mérida\", \"Tijuana\", \"La Paz\"]\nciudades[0], ciudades[-1], len(ciudades)\n\n('Temixco', 'La Paz', 4)\n\n\nUna lista es una colección ordenada. Se indexa desde cero, y -1 es el último elemento. En la sesión 2, tu app recorrerá una lista de ciudades exactamente así."
+  },
+  {
+    "objectID": "sesion1.html#python-mínimo-3-diccionarios",
+    "href": "sesion1.html#python-mínimo-3-diccionarios",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Python mínimo 3 · diccionarios",
+    "text": "Python mínimo 3 · diccionarios\n\nsitio = {\"nombre\": \"Temixco\", \"lat\": 18.84,\n         \"lon\": -99.24, \"altitud\": 1220}\nsitio[\"lat\"]\n\n18.84\n\n\nUn diccionario guarda pares clave → valor. Es la forma natural de describir un sitio; una tabla de pandas será la forma natural de describir muchos."
+  },
+  {
+    "objectID": "sesion1.html#python-mínimo-4-funciones",
+    "href": "sesion1.html#python-mínimo-4-funciones",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Python mínimo 4 · funciones",
+    "text": "Python mínimo 4 · funciones\n\ndef kwh_mensuales(area_m2, hsp=5.5, eficiencia=0.20):\n    return area_m2 * hsp * eficiencia * 30\n\nf\"{kwh_mensuales(10):.0f} kWh al mes con 10 m²\"\n\n'330 kWh al mes con 10 m²'\n\n\nUna función empaca un cálculo con nombre y valores por defecto. La regla de tres de los instaladores solares: área × horas solares pico × eficiencia × 30 días.\n\nEse hsp=5.5 es un número mágico por ahora. Al final de la sesión lo vamos a calcular de verdad, para tu techo y tu clima."
+  },
+  {
+    "objectID": "sesion1.html#celda-1-las-herramientas",
+    "href": "sesion1.html#celda-1-las-herramientas",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 1 · Las herramientas",
+    "text": "Celda 1 · Las herramientas\n\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom pvlib.location import Location\n\nImportamos las bibliotecas: pandas para tablas con tiempo, numpy para matemáticas, matplotlib para gráficas y pvlib para la física solar."
+  },
+  {
+    "objectID": "sesion1.html#celda-2-el-lugar",
+    "href": "sesion1.html#celda-2-el-lugar",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 2 · El lugar",
+    "text": "Celda 2 · El lugar\n\ntemixco = Location(latitude=18.84, longitude=-99.24,\n                   tz=\"America/Mexico_City\",\n                   altitude=1220, name=\"Temixco\")\n\nCreamos el sitio: dónde está Temixco (la casa del IER-UNAM), en qué zona horaria y a qué altura."
+  },
+  {
+    "objectID": "sesion1.html#celda-3-el-cuándo",
+    "href": "sesion1.html#celda-3-el-cuándo",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 3 · El cuándo",
+    "text": "Celda 3 · El cuándo\n\nhoras = pd.date_range(\"2026-03-21\", \"2026-03-22\",\n                      freq=\"10min\", tz=temixco.tz)\n\nCreamos el reloj: un instante cada 10 minutos durante el 21 de marzo, en hora local de Temixco."
+  },
+  {
+    "objectID": "sesion1.html#celda-4-el-cielo-despejado",
+    "href": "sesion1.html#celda-4-el-cielo-despejado",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 4 · El cielo despejado",
+    "text": "Celda 4 · El cielo despejado\n\ncielo = temixco.get_clearsky(horas, model=\"ineichen\",\n                             linke_turbidity=3.0)\n\nCalculamos la irradiancia de un día sin nubes: una tabla con GHI, DNI y DHI para cada instante."
+  },
+  {
+    "objectID": "sesion1.html#celda-5-la-gráfica",
+    "href": "sesion1.html#celda-5-la-gráfica",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 5 · La gráfica",
+    "text": "Celda 5 · La gráfica\n\nfig, ax = plt.subplots(figsize=(9, 2.6))\ncielo[[\"ghi\", \"dni\", \"dhi\"]].plot(ax=ax, lw=2)\nax.set_ylabel(\"Irradiancia (W/m²)\")\nax.set_xlabel(\"Hora local\")\nax.legend([\"GHI\", \"DNI\", \"DHI\"], frameon=False)\nax.grid(alpha=.3)\nplt.tight_layout()"
+  },
+  {
+    "objectID": "sesion1.html#la-tabla-cielo-un-renglón-por-instante-tres-columnas",
+    "href": "sesion1.html#la-tabla-cielo-un-renglón-por-instante-tres-columnas",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "La tabla cielo: un renglón por instante, tres columnas",
+    "text": "La tabla cielo: un renglón por instante, tres columnas\n\ndia = cielo.loc[\"2026-03-21 06:00\":\"2026-03-21 18:00\"]\ndia.iloc[::18].round(0)     # un renglón cada 3 horas\n\n\n\n\n\n\n\n\nghi\ndni\ndhi\n\n\n\n\n2026-03-21 06:00:00-06:00\n0.0\n0.0\n0.0\n\n\n2026-03-21 09:00:00-06:00\n543.0\n878.0\n76.0\n\n\n2026-03-21 12:00:00-06:00\n1048.0\n995.0\n121.0\n\n\n2026-03-21 15:00:00-06:00\n866.0\n965.0\n105.0\n\n\n2026-03-21 18:00:00-06:00\n125.0\n518.0\n30.0\n\n\n\n\n\n\n\nEl índice es la hora local. Cada columna es una irradiancia en W/m²."
+  },
+  {
+    "objectID": "sesion1.html#columna-ghi-global-horizontal",
+    "href": "sesion1.html#columna-ghi-global-horizontal",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Columna ghi · global horizontal",
+    "text": "Columna ghi · global horizontal\n\nax = cielo[\"ghi\"].plot(figsize=(9, 2.6), lw=2)\nax.set_ylabel(\"GHI (W/m²)\"); ax.set_ylim(0, 1100)\n\n\n\n\n\n\n\n\nTodo lo que cae sobre un metro cuadrado de piso horizontal."
+  },
+  {
+    "objectID": "sesion1.html#columna-dni-directa-normal",
+    "href": "sesion1.html#columna-dni-directa-normal",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Columna dni · directa normal",
+    "text": "Columna dni · directa normal\n\nax = cielo[\"dni\"].plot(figsize=(9, 2.6), lw=2)\nax.set_ylabel(\"DNI (W/m²)\"); ax.set_ylim(0, 1100)\n\n\n\n\n\n\n\n\nLo que llega en línea recta desde el disco solar, medido de frente al Sol."
+  },
+  {
+    "objectID": "sesion1.html#columna-dhi-difusa-horizontal",
+    "href": "sesion1.html#columna-dhi-difusa-horizontal",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Columna dhi · difusa horizontal",
+    "text": "Columna dhi · difusa horizontal\n\nax = cielo[\"dhi\"].plot(figsize=(9, 2.6), lw=2)\nax.set_ylabel(\"DHI (W/m²)\"); ax.set_ylim(0, 1100)\n\n\n\n\n\n\n\n\nLo que llega del resto del cielo, sin el disco solar: la luz que hay en la sombra."
+  },
+  {
+    "objectID": "sesion1.html#la-ecuación-de-la-tabla-cielo-a-una-superficie",
+    "href": "sesion1.html#la-ecuación-de-la-tabla-cielo-a-una-superficie",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "La ecuación: de la tabla cielo a una superficie",
+    "text": "La ecuación: de la tabla cielo a una superficie\n\\[\nG_{\\text{sup}} =\n\\underbrace{\\text{DNI}\\cdot\\cos\\theta}_{\\text{1 · directa}}\n\\;+\\;\n\\underbrace{\\text{DHI}\\cdot\\frac{1+\\cos\\beta}{2}}_{\\text{2 · difusa del cielo}}\n\\;+\\;\n\\underbrace{\\text{GHI}\\cdot\\rho\\cdot\\frac{1-\\cos\\beta}{2}}_{\\text{3 · reflejada por el suelo}}\n\\]\nTres caminos, y cada uno usa una columna distinta de la tabla. Solo aparecen tres datos nuevos:\n\n\\(\\beta\\): inclinación de la superficie. 0° = horizontal, 90° = pared.\n\\(\\theta\\): ángulo de incidencia, entre el haz solar y la normal a la superficie.\n\\(\\rho\\): albedo, la fracción de la luz que el suelo rebota."
+  },
+  {
+    "objectID": "sesion1.html#término-1-directa-textdnicdotcostheta",
+    "href": "sesion1.html#término-1-directa-textdnicdotcostheta",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Término 1 · Directa: \\(\\text{DNI}\\cdot\\cos\\theta\\)",
+    "text": "Término 1 · Directa: \\(\\text{DNI}\\cdot\\cos\\theta\\)\n\n\n\n\n\n\n\nVista lateral: superficie inclinada β, su normal y el haz solar.\n\n\n\n\n\n\n\\(\\theta\\) es el ángulo entre el haz solar y la normal a la superficie.\nSi el Sol está de frente, \\(\\theta = 0\\), \\(\\cos\\theta = 1\\) y llega toda la DNI.\nSi el Sol está de lado, la misma luz se reparte sobre más área: \\(\\cos\\theta\\) la reduce.\nSi el Sol está detrás, \\(\\cos\\theta &lt; 0\\) y se toma 0: no hay directa.\n\\(\\theta\\) sale de la superficie (\\(\\beta\\), \\(\\gamma\\)) y de dónde está el Sol (\\(\\theta_z\\), \\(\\gamma_s\\)): \\[\\cos\\theta = \\cos\\beta\\cos\\theta_z + \\sin\\beta\\sin\\theta_z\\cos(\\gamma_s - \\gamma)\\]\nPara el piso horizontal, \\(\\beta = 0\\) y \\(\\theta = \\theta_z\\): lo que ya usa la GHI."
+  },
+  {
+    "objectID": "sesion1.html#término-2-difusa-del-cielo-textdhicdotdfrac1cosbeta2",
+    "href": "sesion1.html#término-2-difusa-del-cielo-textdhicdotdfrac1cosbeta2",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Término 2 · Difusa del cielo: \\(\\text{DHI}\\cdot\\dfrac{1+\\cos\\beta}{2}\\)",
+    "text": "Término 2 · Difusa del cielo: \\(\\text{DHI}\\cdot\\dfrac{1+\\cos\\beta}{2}\\)\n\n\n\nLa DHI es lo que llega de toda la bóveda celeste a un piso horizontal, que la ve completa.\nUna superficie inclinada ve solo una parte de la bóveda. El factor \\(\\frac{1+\\cos\\beta}{2}\\) es esa fracción.\nSuponemos que el cielo brilla parejo en todas direcciones (modelo isotrópico). No es exacto, pero es simple y conservador.\nNo depende de dónde está el Sol: solo de \\(\\beta\\).\n\n\n\n\n\nSuperficie\n\\(\\beta\\)\nFracción de la bóveda\n\n\n\n\nhorizontal\n0°\n1: toda\n\n\ninclinada\n30°\n0.93\n\n\npared\n90°\n½\n\n\nboca abajo\n180°\n0: nada"
+  },
+  {
+    "objectID": "sesion1.html#término-3-reflejada-por-el-suelo-textghicdotrhocdotdfrac1-cosbeta2",
+    "href": "sesion1.html#término-3-reflejada-por-el-suelo-textghicdotrhocdotdfrac1-cosbeta2",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Término 3 · Reflejada por el suelo: \\(\\text{GHI}\\cdot\\rho\\cdot\\dfrac{1-\\cos\\beta}{2}\\)",
+    "text": "Término 3 · Reflejada por el suelo: \\(\\text{GHI}\\cdot\\rho\\cdot\\dfrac{1-\\cos\\beta}{2}\\)\n\n\n\nGHI: lo que cae al suelo (por eso usa la columna global horizontal).\n\\(\\rho\\), albedo: la fracción que el suelo rebota, entre 0 (negro) y 1 (blanco).\n\\(\\frac{1-\\cos\\beta}{2}\\): la fracción del suelo que la superficie ve. Es la que le falta del cielo: los dos factores suman 1.\nUn piso horizontal no ve el suelo: 0. Una pared ve la mitad: \\(\\rho\\cdot\\text{GHI}/2\\).\nEl albedo es una suposición: hay que anotarla y probar cuánto pesa.\n\n\n\n\n\nSuelo\n\\(\\rho\\) típico\n\n\n\n\nasfalto\n0.10\n\n\npasto\n0.20\n\n\nconcreto\n0.30\n\n\narena\n0.40\n\n\ntecho blanco\n0.70\n\n\nnieve fresca\n0.85"
+  },
+  {
+    "objectID": "sesion1.html#celda-6-la-posición-del-sol",
+    "href": "sesion1.html#celda-6-la-posición-del-sol",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 6 · La posición del Sol",
+    "text": "Celda 6 · La posición del Sol\n\nsol = temixco.get_solarposition(horas)\nangulos = sol[[\"apparent_zenith\", \"azimuth\"]]\nangulos.loc[dia.index[::18]].round(1)\n\n\n\n\n\n\n\n\napparent_zenith\nazimuth\n\n\n\n\n2026-03-21 06:00:00-06:00\n100.3\n86.1\n\n\n2026-03-21 09:00:00-06:00\n57.9\n101.8\n\n\n2026-03-21 12:00:00-06:00\n21.3\n148.3\n\n\n2026-03-21 15:00:00-06:00\n38.0\n245.1\n\n\n2026-03-21 18:00:00-06:00\n79.4\n266.9\n\n\n\n\n\n\n\nPara cada instante, dónde está el Sol: el ángulo cenital, desde la vertical, y el azimut, con 0° = N, 90° = E, 180° = S. La tabla sol trae más columnas; estas dos son las que usa la ecuación."
+  },
+  {
+    "objectID": "sesion1.html#cómo-se-usan-los-dos-ángulos",
+    "href": "sesion1.html#cómo-se-usan-los-dos-ángulos",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Cómo se usan los dos ángulos",
+    "text": "Cómo se usan los dos ángulos\n\n\n\n\n\nIzquierda: vista de lado. Derecha: vista desde arriba, con la trayectoria del Sol del 21 de marzo y la pared al este.\n\n\n\n\n\\(\\theta_z\\) se mide desde la vertical. \\(\\gamma_s\\) se mide sobre el suelo, desde el norte y en sentido horario. La pared al este solo tiene al Sol de frente mientras \\(\\gamma_s\\) está entre 0° y 180°: por la mañana."
+  },
+  {
+    "objectID": "sesion1.html#celda-7-la-ecuación-en-pvlib",
+    "href": "sesion1.html#celda-7-la-ecuación-en-pvlib",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 7 · La ecuación en pvlib",
+    "text": "Celda 7 · La ecuación en pvlib\n\nfrom pvlib import irradiance\npared = irradiance.get_total_irradiance(\n    surface_tilt=90, surface_azimuth=90,\n    solar_zenith=sol[\"apparent_zenith\"],\n    solar_azimuth=sol[\"azimuth\"],\n    dni=cielo[\"dni\"], dhi=cielo[\"dhi\"],\n    ghi=cielo[\"ghi\"], albedo=0.20,\n    model=\"isotropic\")\n\nUna pared vertical (β = 90°) que mira al este (γ = 90°) con pasto enfrente (ρ = 0.20)."
+  },
+  {
+    "objectID": "sesion1.html#la-tabla-pared-los-tres-términos-y-su-suma",
+    "href": "sesion1.html#la-tabla-pared-los-tres-términos-y-su-suma",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "La tabla pared: los tres términos y su suma",
+    "text": "La tabla pared: los tres términos y su suma\n\npared.loc[dia.index[::18]].round(0)\n\n\n\n\n\n\n\n\npoa_global\npoa_direct\npoa_diffuse\npoa_sky_diffuse\npoa_ground_diffuse\n\n\n\n\n2026-03-21 06:00:00-06:00\n0.0\n0.0\n0.0\n0.0\n0.0\n\n\n2026-03-21 09:00:00-06:00\n820.0\n728.0\n92.0\n38.0\n54.0\n\n\n2026-03-21 12:00:00-06:00\n355.0\n190.0\n166.0\n61.0\n105.0\n\n\n2026-03-21 15:00:00-06:00\n139.0\n0.0\n139.0\n53.0\n87.0\n\n\n2026-03-21 18:00:00-06:00\n27.0\n0.0\n27.0\n15.0\n13.0\n\n\n\n\n\n\n\npoa_direct, poa_sky_diffuse y poa_ground_diffuse son los términos 1, 2 y 3. poa_diffuse suma los dos últimos y poa_global es el total: lo que recibe la pared."
+  },
+  {
+    "objectID": "sesion1.html#energía-el-área-bajo-la-curva",
+    "href": "sesion1.html#energía-el-área-bajo-la-curva",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Energía: el área bajo la curva",
+    "text": "Energía: el área bajo la curva\n\n\n\n\n\nIrradiancia total sobre la pared al este durante el día. El área sombreada es la energía.\n\n\n\n\n\npoa_global es potencia por metro cuadrado en cada instante: W/m². Como la velocidad de un coche.\nLa energía del día es lo acumulado: el área bajo la curva. Como la distancia recorrida.\nCon renglones cada 10 minutos, el área es la suma de renglones × 10/60 h. Entre 1000 para pasar de Wh a kWh."
+  },
+  {
+    "objectID": "sesion1.html#celda-8-la-energía-del-día",
+    "href": "sesion1.html#celda-8-la-energía-del-día",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 8 · La energía del día",
+    "text": "Celda 8 · La energía del día\n\ndt_h = 10 / 60                        # horas por renglón\nenergia = pared[\"poa_global\"].sum() * dt_h / 1000\nprint(f\"{energia:.2f} kWh/m² en el día\")\n\n4.10 kWh/m² en el día\n\n\nSumamos todos los renglones de poa_global y multiplicamos por la duración de cada uno. Es el área bajo la curva, en kWh por metro cuadrado de pared."
+  },
+  {
+    "objectID": "sesion1.html#celda-9-cuatro-paredes",
+    "href": "sesion1.html#celda-9-cuatro-paredes",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 9 · Cuatro paredes",
+    "text": "Celda 9 · Cuatro paredes\n\norientaciones = {\"Norte\": 0, \"Este\": 90,\n                 \"Sur\": 180, \"Oeste\": 270}\nparedes = {}\nfor nombre, azimut in orientaciones.items():\n    poa = irradiance.get_total_irradiance(\n        surface_tilt=90, surface_azimuth=azimut,\n        solar_zenith=sol[\"apparent_zenith\"],\n        solar_azimuth=sol[\"azimuth\"],\n        dni=cielo[\"dni\"], dhi=cielo[\"dhi\"],\n        ghi=cielo[\"ghi\"], albedo=0.20)\n    paredes[nombre] = poa[\"poa_global\"]\nparedes = pd.DataFrame(paredes)\n\nUn ciclo: la celda 7 cuatro veces, cambiando solo el azimut. Guardamos poa_global de cada pared en una tabla."
+  },
+  {
+    "objectID": "sesion1.html#celda-10-la-energía-de-cada-pared",
+    "href": "sesion1.html#celda-10-la-energía-de-cada-pared",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 10 · La energía de cada pared",
+    "text": "Celda 10 · La energía de cada pared\n\nenergias = paredes.sum() * dt_h / 1000\nenergias.round(2)\n\nNorte    1.27\nEste     4.10\nSur      3.48\nOeste    4.10\ndtype: float64\n\n\nkWh/m² en el día para cada orientación, con el mismo cálculo de la celda 8 aplicado a las cuatro columnas a la vez. ¿Sorpresa? En Temixco, la pared sur no gana."
+  },
+  {
+    "objectID": "sesion1.html#pared-al-este",
+    "href": "sesion1.html#pared-al-este",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Pared al este",
+    "text": "Pared al este\n\n\n\n\n\n\n\n\n\nPico en la mañana, cuando el Sol está de frente. Después del mediodía solo recibe difusa y reflejada. Área bajo la curva: 4.10 kWh/m²."
+  },
+  {
+    "objectID": "sesion1.html#pared-al-sur",
+    "href": "sesion1.html#pared-al-sur",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Pared al sur",
+    "text": "Pared al sur\n\n\n\n\n\n\n\n\n\nVe al Sol todo el día… pero en Temixco el Sol del equinoccio pasa casi por el cenit (θz ≈ 19° al mediodía): una pared vertical lo ve siempre de reojo. Junta 3.48 kWh/m², menos que este u oeste. En el trópico, las paredes son malos colectores."
+  },
+  {
+    "objectID": "sesion1.html#el-techo-le-gana-a-cualquier-pared",
+    "href": "sesion1.html#el-techo-le-gana-a-cualquier-pared",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "El techo le gana a cualquier pared",
+    "text": "El techo le gana a cualquier pared\n\ntecho20 = irradiance.get_total_irradiance(\n    surface_tilt=20, surface_azimuth=180,\n    solar_zenith=sol[\"apparent_zenith\"],\n    solar_azimuth=sol[\"azimuth\"],\n    dni=cielo[\"dni\"], dhi=cielo[\"dhi\"],\n    ghi=cielo[\"ghi\"], albedo=0.20)\ne_techo = techo20[\"poa_global\"].sum() * dt_h / 1000\nprint(f\"Techo a 20° al sur: {e_techo:.2f} kWh/m² en el día\")\n\nTecho a 20° al sur: 8.10 kWh/m² en el día\n\n\nSi el Sol va alto, hay que acostarse para verlo de frente: un techo a 20° junta 2.0× lo de la mejor pared. Por eso los paneles se montan casi horizontales en México, y por eso tu techo es la mina."
+  },
+  {
+    "objectID": "sesion1.html#trayectoria-aparente-del-sol-el-mapa-completo",
+    "href": "sesion1.html#trayectoria-aparente-del-sol-el-mapa-completo",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Trayectoria aparente del Sol: el mapa completo",
+    "text": "Trayectoria aparente del Sol: el mapa completo\n\n\n\n\n\nVista desde arriba. Azimut desde el norte en sentido horario; el centro es el cenit y el borde el horizonte. Trayectoria del 21 de marzo (línea gruesa) y de los solsticios (punteadas).\n\n\n\n\nEl 21 de marzo el Sol pasa rozando el cenit: por eso ninguna pared lo ve bien y el techo gana. En junio, Temixco está al sur del Sol: la trayectoria cruza al lado norte y la pared norte sí recibe directa. En diciembre todo se recorre al sur."
+  },
+  {
+    "objectID": "sesion1.html#el-cielo-despejado-es-una-ficción-útil",
+    "href": "sesion1.html#el-cielo-despejado-es-una-ficción-útil",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "El cielo despejado es una ficción útil",
+    "text": "El cielo despejado es una ficción útil\n\nEl modelo Ineichen responde “¿cuánto llegaría sin nubes?”. Perfecto para entender la geometría; malo para dimensionar un sistema: sobreestima.\nLo que necesitamos: un año de datos medidos (estación o satélite), hora por hora.\nTMY (typical meteorological year): 8760 horas armadas mes a mes con los meses más “típicos” de ~15–20 años de datos. No es un año que ocurrió: es el año estadísticamente representativo.\n\n\n\nDos maneras de conseguir un TMY: un archivo EPW (el formato estándar de la simulación de edificios) o pedírselo a PVGIS desde Python, para cualquier punto del mapa."
+  },
+  {
+    "objectID": "sesion1.html#celda-11-leer-un-archivo-epw",
+    "href": "sesion1.html#celda-11-leer-un-archivo-epw",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 11 · Leer un archivo EPW",
+    "text": "Celda 11 · Leer un archivo EPW\n\nfrom pvlib import iotools\nepw, meta_epw = iotools.read_epw(\"data/epw/temixco.epw\",\n                                 coerce_year=2026)\nepw[[\"ghi\", \"dni\", \"dhi\", \"temp_air\"]].head(3)\n\n\n\n\n\n\n\n\nghi\ndni\ndhi\ntemp_air\n\n\n\n\n2026-01-01 00:00:00-06:00\n0.0\n-0.0\n0.0\n13.85\n\n\n2026-01-01 01:00:00-06:00\n0.0\n-0.0\n0.0\n11.21\n\n\n2026-01-01 02:00:00-06:00\n0.0\n-0.0\n0.0\n10.75\n\n\n\n\n\n\n\nUn EPW es texto plano: 8 renglones de encabezado y 8760 de datos. read_epw lo convierte en la misma tabla que ya conocemos —GHI, DNI, DHI— más temperatura y viento. coerce_year pone todas las horas en el mismo año."
+  },
+  {
+    "objectID": "sesion1.html#el-año-completo-de-un-vistazo",
+    "href": "sesion1.html#el-año-completo-de-un-vistazo",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "El año completo, de un vistazo",
+    "text": "El año completo, de un vistazo\n\n\nVer código\ndiaria = epw[\"ghi\"].resample(\"D\").sum() / 1000\nfig, ax = plt.subplots(figsize=(9, 3))\nax.plot(diaria.index, diaria.values, lw=0.8, color=\"#5c677d\")\nax.plot(diaria.rolling(30, center=True).mean(), lw=2.5, color=\"#f4a300\")\nax.set_ylabel(\"kWh/m² al día\"); ax.grid(alpha=.3)\nplt.tight_layout()\n\n\n\n\n\nGHI diaria en Temixco durante el año meteorológico típico (EPW).\n\n\n\n\nLa línea gris es cada día; la ámbar, el promedio móvil de 30 días. Ahí está la temporada de lluvias — y ningún día real es la curva perfecta del cielo despejado."
+  },
+  {
+    "objectID": "sesion1.html#celda-12-cualquier-localidad-una-línea-pvgis",
+    "href": "sesion1.html#celda-12-cualquier-localidad-una-línea-pvgis",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 12 · Cualquier localidad, una línea: PVGIS",
+    "text": "Celda 12 · Cualquier localidad, una línea: PVGIS\n\ntmy, meta = iotools.get_pvgis_tmy(18.84, -99.24,\n                                  map_variables=True,\n                                  roll_utc_offset=-6,\n                                  coerce_year=2026)\ntmy[[\"ghi\", \"dni\", \"dhi\", \"temp_air\"]].head(3)\n\n\n\n\n\n\n\n\nghi\ndni\ndhi\ntemp_air\n\n\ntime(Etc/GMT+6)\n\n\n\n\n\n\n\n\n2026-01-01 00:00:00-06:00\n0.0\n0.0\n0.0\n17.46\n\n\n2026-01-01 01:00:00-06:00\n0.0\n0.0\n0.0\n16.87\n\n\n2026-01-01 02:00:00-06:00\n0.0\n0.0\n0.0\n14.13\n\n\n\n\n\n\n\nPVGIS (Comisión Europea) entrega el TMY de cualquier punto de América, derivado de satélite, sin registrarse. Ojo: lo entrega en UTC; roll_utc_offset=-6 lo recorre a hora local. Si lo olvidas, tu sol sale a medianoche."
+  },
+  {
+    "objectID": "sesion1.html#las-nubes-mes-a-mes",
+    "href": "sesion1.html#las-nubes-mes-a-mes",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Las nubes, mes a mes",
+    "text": "Las nubes, mes a mes\n\n\nVer código\ncielo_anio = temixco.get_clearsky(tmy.index, model=\"ineichen\",\n                                  linke_turbidity=3.0)\nmensual = pd.DataFrame({\n    \"cielo despejado\": cielo_anio[\"ghi\"].groupby(cielo_anio.index.month).sum() / 1000,\n    \"año típico (PVGIS)\": tmy[\"ghi\"].groupby(tmy.index.month).sum() / 1000,\n})\nax = mensual.plot.bar(figsize=(9, 3.2), color=[\"#5c677d\", \"#f4a300\"], width=0.75)\nax.set_xticklabels(list(\"EFMAMJJASOND\"), rotation=0)\nax.set_ylabel(\"kWh/m² al mes\"); ax.grid(alpha=.3, axis=\"y\")\nax.legend(frameon=False)\nplt.tight_layout()\n\n\n\n\n\nGHI mensual en Temixco: cielo despejado vs año meteorológico típico.\n\n\n\n\nLas nubes le cuestan a Temixco 17% del recurso anual — y casi todo se concentra en la temporada de lluvias."
+  },
+  {
+    "objectID": "sesion1.html#celda-13-el-techo-hora-por-hora-todo-el-año",
+    "href": "sesion1.html#celda-13-el-techo-hora-por-hora-todo-el-año",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 13 · El techo, hora por hora, todo el año",
+    "text": "Celda 13 · El techo, hora por hora, todo el año\n\nsol_tmy = temixco.get_solarposition(tmy.index)\ntecho = irradiance.get_total_irradiance(\n    surface_tilt=20, surface_azimuth=180,\n    solar_zenith=sol_tmy[\"apparent_zenith\"],\n    solar_azimuth=sol_tmy[\"azimuth\"],\n    dni=tmy[\"dni\"], ghi=tmy[\"ghi\"], dhi=tmy[\"dhi\"],\n    albedo=0.20, model=\"isotropic\")\n\nLa misma ecuación de los tres caminos, pero con el año típico en lugar del cielo despejado: un techo a 20° mirando al sur, 8760 renglones."
+  },
+  {
+    "objectID": "sesion1.html#celda-14-del-sol-a-los-kwh-del-sistema",
+    "href": "sesion1.html#celda-14-del-sol-a-los-kwh-del-sistema",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Celda 14 · Del sol a los kWh del sistema",
+    "text": "Celda 14 · Del sol a los kWh del sistema\n\narea = 10          # m² de paneles\neficiencia = 0.20  # 20 %\nkwh_anio = techo[\"poa_global\"].sum() / 1000 * area * eficiencia\nprint(f\"{kwh_anio:,.0f} kWh al año con {area} m²\")\n\n4,660 kWh al año con 10 m²\n\n\nCada renglón del TMY dura 1 hora, así que la suma ya integra. Entre 1000 → kWh/m²; por área y eficiencia → la energía del sistema. Modelo mínimo: sin temperatura ni pérdidas — eso se refina después."
+  },
+  {
+    "objectID": "sesion1.html#el-número-mágico-revelado",
+    "href": "sesion1.html#el-número-mágico-revelado",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "El número mágico, revelado",
+    "text": "El número mágico, revelado\n\nhsp = techo[\"poa_global\"].sum() / 1000 / 365\nprint(f\"{hsp:.2f} horas solares pico promedio en Temixco\")\nprint(f\"{kwh_mensuales(10, hsp=hsp):,.0f} kWh/mes con nuestra función\")\nprint(f\"{kwh_anio / 12:,.0f} kWh/mes con el año típico completo\")\n\n6.38 horas solares pico promedio en Temixco\n383 kWh/mes con nuestra función\n388 kWh/mes con el año típico completo\n\n\nLa hora solar pico son los kWh/m²-día que recibe el plano del arreglo. El hsp=5.5 del inicio era esto. Ya no es un número mágico: sale de tu techo y de tu clima."
+  },
+  {
+    "objectID": "sesion1.html#la-cosecha-mes-a-mes",
+    "href": "sesion1.html#la-cosecha-mes-a-mes",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "La cosecha, mes a mes",
+    "text": "La cosecha, mes a mes\n\n\nVer código\nkwh_mes = techo[\"poa_global\"].groupby(techo.index.month).sum() / 1000 * area * eficiencia\nfig, ax = plt.subplots(figsize=(9, 3.2))\nax.bar(kwh_mes.index, kwh_mes.values, color=\"#f4a300\")\nax.set_xticks(range(1, 13)); ax.set_xticklabels(list(\"EFMAMJJASOND\"))\nax.set_ylabel(\"kWh del sistema\"); ax.grid(alpha=.3, axis=\"y\")\nplt.tight_layout()\n\n\n\n\n\nEnergía mensual del sistema de 10 m² en Temixco (año típico).\n\n\n\n\n¿Por qué el pico está en primavera y no en verano? (Pista: ya viste la gráfica de las nubes.) En la sesión 3, esta curva se cruza contra tu recibo de CFE."
+  },
+  {
+    "objectID": "sesion1.html#reproducible-desde-la-primera-línea",
+    "href": "sesion1.html#reproducible-desde-la-primera-línea",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Reproducible desde la primera línea",
+    "text": "Reproducible desde la primera línea\n\n\n\nTodo el taller vive en un repositorio: diapositivas, libretas y datos.\nCada libreta declara sus dependencias en su encabezado; con uv corre igual en molab o en tu máquina:\n\n# /// script\n# requires-python = \"&gt;=3.12\"\n# dependencies = [\"marimo\", \"pandas\",\n#                 \"pvlib\", \"matplotlib\"]\n# ///\nuv run marimo edit notebooks/s1_fundamentos.py\n\n\nLa libreta de marimo es un archivo .py: se lee, se versiona, se comparte.\nEn molab no instalaste nada; en tu máquina tampoco hace falta más que uv.\nLa narrativa computacional: texto, código y resultados en el mismo documento, regenerable desde cero."
+  },
+  {
+    "objectID": "sesion1.html#reto-para-casa",
+    "href": "sesion1.html#reto-para-casa",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Reto para casa",
+    "text": "Reto para casa\n\nTu ciudad: saca su latitud y longitud de Google Maps (clic derecho → copiar coordenadas), pídele el TMY a PVGIS y calcula sus horas solares pico. ¿Le gana a Temixco?\nTu techo real: cambia surface_tilt y surface_azimuth a los de tu casa. ¿Cuánto pierdes respecto a 20° al sur?\n📄 Consigue un recibo de CFE para la sesión 3.\n\n\n\nPróxima sesión: la libreta se convierte en app — sliders, menús, un catálogo de 18 ciudades y modo webapp sin código visible.\n\n\nMaterial del taller: diapositivas, libretas y datos en el repositorio · molab.marimo.io"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "",
+    "text": "Taller práctico de tres sesiones (6 horas), dirigido a estudiantes de ingeniería sin experiencia previa en Python. Cada participante construye una aplicación web funcional que estima, para cualquier ciudad de México, cuántos kWh generaría un sistema fotovoltaico, cuánto ahorraría con tarifa CFE y cuántos kg de CO₂ evitaría según la hora del día en la red nacional.\nTodo el taller corre en molab (marimo en la nube): no hay que instalar nada, solo se necesita una cuenta de GitHub o de Google."
+  },
+  {
+    "objectID": "index.html#sesiones",
+    "href": "index.html#sesiones",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Sesiones",
+    "text": "Sesiones\n\n\n\nSesión\nTema\nDiapositivas\nLibreta\n\n\n\n\n1\nPython, marimo y la física del recurso solar\nabrir\n\n\n\n2\nDe la libreta a la app: controles interactivos\nen preparación\nen preparación\n\n\n3\nEl recibo y el CO₂: demanda, tarifa CFE y factor de emisión horario\nen preparación\nen preparación"
+  },
+  {
+    "objectID": "index.html#qué-te-llevas",
+    "href": "index.html#qué-te-llevas",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Qué te llevas",
+    "text": "Qué te llevas\n\nTu primera app web en Python, sin escribir HTML ni JavaScript, exportable como HTML autocontenido y defendible en un portafolio profesional.\nEl flujo completo de un data scientist energético: datos meteorológicos (EPW, PVGIS), modelado fotovoltaico con pvlib, y el cruce de generación, demanda, tarifa y huella de carbono horaria.\nEl insight que sostiene las redes inteligentes: un kWh solar vale distinto según la hora del día."
+  },
+  {
+    "objectID": "index.html#antes-de-llegar",
+    "href": "index.html#antes-de-llegar",
+    "title": "Mi techo, mis kWh, mi CO₂",
+    "section": "Antes de llegar",
+    "text": "Antes de llegar\n\nCrea tu cuenta en molab.marimo.io (con GitHub o Google).\nPara la sesión 3: trae un recibo de CFE (el tuyo o el de tu casa).\n\n\nGuillermo Barrios del Valle · Instituto de Energías Renovables, UNAM · gbv@ier.unam.mx"
+  }
+]

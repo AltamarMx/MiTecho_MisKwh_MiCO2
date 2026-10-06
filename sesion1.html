@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <meta name="author" content="Guillermo Barrios del Valle">
+  <title>Mi techo, mis kWh, mi CO₂</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-9bc7a5a4871b1a5bb03531a8b2fc2b07.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Mi techo, mis kWh, mi CO₂</h1>
+  <p class="subtitle">Sesión 1 · Python, marimo y la física del recurso solar</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Guillermo Barrios del Valle 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:gbv@ier.unam.mx">gbv@ier.unam.mx</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Instituto de Energías Renovables, UNAM
+          </p>
+    </div>
+</div>
+
+  <p class="date">5 de octubre de 2026</p>
+</section>
+<section id="antes-de-empezar-abre-la-libreta-en-molab" class="slide level2 smaller">
+<h2>Antes de empezar: abre la libreta en molab</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Hoy trabajamos en <strong>molab</strong>: marimo en la nube, <strong>sin instalar nada</strong>. Solo necesitas una cuenta de GitHub o de Google.</p>
+<p><a href="https://molab.marimo.io/github/AltamarMx/MiTecho_MisKwh_MiCO2/blob/main/notebooks/s1_fundamentos.py" class="btn-molab"><strong>Abrir la libreta en molab</strong></a></p>
+<ol type="1">
+<li>Entra a <a href="https://molab.marimo.io">molab.marimo.io</a> con tu cuenta.</li>
+<li>Abre el enlace o escanea el código.</li>
+<li>molab monta el <strong>repositorio completo</strong>: la libreta, los datos, todo.</li>
+</ol>
+<div class="small">
+<p>La libreta es un archivo de Python puro (<code>notebooks/s1_fundamentos.py</code>) dentro del repositorio del taller.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="673a6559" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-2-output-1.png" width="317" height="317"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="el-taller-tres-sesiones-una-app" class="slide level2 smaller">
+<h2>El taller: tres sesiones, una app</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Sesión</th>
+<th>Construyes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Python, marimo y la física del recurso solar</td>
+<td>tu primer modelo fotovoltaico: de la latitud a los kWh</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>De la libreta a la app</td>
+<td>la app interactiva: sliders, menús y modo webapp</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>El recibo y el CO₂</td>
+<td>los 3 KPIs: kWh generados, $ ahorrados, kg de CO₂ evitados</td>
+</tr>
+</tbody>
+</table>
+<div class="idea-clave">
+<p>Al final te llevas una <strong>app web parametrizable</strong>, exportable como HTML y defendible en tu portafolio, hecha 100 % en Python: ni una línea de HTML ni de JavaScript.</p>
+</div>
+<div class="small">
+<p>📄 Para la sesión 3: <strong>trae un recibo de CFE</strong> (el tuyo o el de tu casa). Lo vamos a convertir en datos.</p>
+</div>
+</section>
+<section id="la-ruta-de-hoy" class="slide level2 smaller">
+<h2>La ruta de hoy</h2>
+<ol type="1">
+<li><strong>molab y tu primera libreta</strong> (10 min)</li>
+<li><strong>¿Por qué Python?</strong> (10 min)</li>
+<li><strong>Python mínimo</strong> y las reglas de marimo (20 min)</li>
+<li><strong>Geometría solar</strong>: del cielo a tu techo (30 min)</li>
+<li><strong>Datos meteorológicos reales</strong>: EPW y PVGIS (25 min)</li>
+<li><strong>Tu primer modelo fotovoltaico</strong> (15 min)</li>
+<li>Reproducibilidad, reto y cierre (10 min)</li>
+</ol>
+<aside class="notes">
+<p>Formato de todo el taller: lanzar la pregunta, esperar respuestas, avanzar para mostrar la nuestra.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section>
+<section id="por-qué-python" class="title-slide slide level1 titulo-seccion center">
+<h1>¿Por qué Python?</h1>
+
+</section>
+<section id="un-lenguaje-general-con-un-ecosistema-científico" class="slide level2">
+<h2>Un lenguaje general con un ecosistema científico</h2>
+<div class="fragment fade-in-then-semi-out">
+<p><strong>¿Qué tiene Python que no tengan Excel, MATLAB o R?</strong></p>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><strong>Un solo lenguaje</strong> para todo el flujo: adquisición, limpieza, modelado, visualización, reporte.</li>
+<li class="fragment"><strong>Ecosistema maduro</strong>: NumPy, pandas, Matplotlib, SciPy, scikit-learn, xarray.</li>
+<li class="fragment"><strong>Dominio de energía</strong>: <code>pvlib</code>, <code>windpowerlib</code>, <code>PyPSA</code>, <code>oemof</code>, <code>pandapower</code>.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><strong>Código abierto</strong>: sin licencias, auditable, citable.</li>
+<li class="fragment"><strong>Comunidad enorme</strong>: la duda que tienes ya alguien la resolvió.</li>
+<li class="fragment"><strong>Puente</strong> hacia HPC, la nube y el aprendizaje automático.</li>
+</ul>
+</div></div>
+<div class="fragment idea-clave">
+<p>Python no es la herramienta más rápida ni la más elegante: es la que <strong>conecta</strong> todo lo demás.</p>
+</div>
+</section>
+<section id="ejemplo-la-irradiancia-de-un-día-despejado-en-8-líneas" class="slide level2 smaller">
+<h2>Ejemplo: la irradiancia de un día despejado, en 8 líneas</h2>
+<div class="fragment fade-in-then-semi-out">
+<p><strong>¿Cuántas líneas hacen falta para calcular y graficar la irradiancia de un día despejado en Temixco?</strong></p>
+</div>
+<div class="fragment">
+<div id="cell-fig-clearsky" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Ver código (pvlib + pandas + matplotlib)</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a></a><span class="im">from</span> pvlib.location <span class="im">import</span> Location</span>
+<span id="cb1-4"><a></a></span>
+<span id="cb1-5"><a></a>temixco <span class="op">=</span> Location(latitude<span class="op">=</span><span class="fl">18.84</span>, longitude<span class="op">=-</span><span class="fl">99.24</span>,</span>
+<span id="cb1-6"><a></a>                   tz<span class="op">=</span><span class="st">"America/Mexico_City"</span>, altitude<span class="op">=</span><span class="dv">1220</span>, name<span class="op">=</span><span class="st">"Temixco"</span>)</span>
+<span id="cb1-7"><a></a></span>
+<span id="cb1-8"><a></a>horas <span class="op">=</span> pd.date_range(<span class="st">"2026-03-21"</span>, <span class="st">"2026-03-22"</span>, freq<span class="op">=</span><span class="st">"10min"</span>, tz<span class="op">=</span>temixco.tz)</span>
+<span id="cb1-9"><a></a>cielo <span class="op">=</span> temixco.get_clearsky(horas, model<span class="op">=</span><span class="st">"ineichen"</span>, linke_turbidity<span class="op">=</span><span class="fl">3.0</span>)</span>
+<span id="cb1-10"><a></a></span>
+<span id="cb1-11"><a></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">3.8</span>))</span>
+<span id="cb1-12"><a></a>cielo[[<span class="st">"ghi"</span>, <span class="st">"dni"</span>, <span class="st">"dhi"</span>]].plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb1-13"><a></a>ax.set_ylabel(<span class="st">"Irradiancia (W/m²)"</span>)</span>
+<span id="cb1-14"><a></a>ax.set_xlabel(<span class="st">"Hora local"</span>)</span>
+<span id="cb1-15"><a></a>ax.set_title(<span class="st">"Equinoccio de primavera · cielo despejado"</span>)</span>
+<span id="cb1-16"><a></a>ax.legend([<span class="st">"GHI"</span>, <span class="st">"DNI"</span>, <span class="st">"DHI"</span>], frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-17"><a></a>ax.grid(alpha<span class="op">=</span><span class="fl">.3</span>)</span>
+<span id="cb1-18"><a></a>plt.tight_layout()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-clearsky" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-clearsky-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="sesion1_files/figure-revealjs/fig-clearsky-output-1.png" width="857" height="355">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clearsky-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Irradiancia de cielo despejado (modelo Ineichen) en Temixco, Morelos.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="lo-que-acabamos-de-ver" class="slide level2 smaller">
+<h2>Lo que acabamos de ver</h2>
+<ul>
+<li class="fragment"><strong>8 líneas</strong> de código: ubicación → posición solar → modelo de cielo despejado → gráfica.</li>
+<li class="fragment">Cada paso es una <strong>biblioteca revisada por pares</strong> (<code>pvlib</code> nació en Sandia National Labs).</li>
+<li class="fragment">El resultado es <strong>reproducible</strong>: cualquier persona con este archivo obtiene la misma figura.</li>
+</ul>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Pregunta para la audiencia</strong></p>
+</div>
+<div class="callout-content">
+<p>¿Cuántas de sus hojas de cálculo podrían regenerarse hoy desde cero, sin intervención manual?</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="marimo-y-el-python-mínimo" class="title-slide slide level1 titulo-seccion center">
+<h1>marimo y el Python mínimo</h1>
+
+</section>
+<section id="jupyter-vs-marimo-el-cuaderno-reactivo" class="slide level2 smaller">
+<h2>Jupyter vs marimo: el cuaderno reactivo</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Jupyter</strong> (el cuaderno clásico)</p>
+<ul>
+<li class="fragment">Corres las celdas <strong>a mano</strong>, en el orden que quieras.</li>
+<li class="fragment">Estado oculto: ¿corriste la celda 5 antes que la 3? El cuaderno ya no dice la verdad.</li>
+<li class="fragment">El archivo <code>.ipynb</code> es JSON: difícil de leer y de versionar.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>marimo</strong> (el cuaderno reactivo)</p>
+<ul>
+<li class="fragment">Cada celda es una función; el cuaderno es un <strong>grafo de dependencias</strong>.</li>
+<li class="fragment">Una variable se define en <strong>una sola</strong> celda.</li>
+<li class="fragment">Cambias algo → se recalcula <strong>todo lo que depende de ello</strong>. No hay estado oculto.</li>
+<li class="fragment">El archivo es <strong>Python puro</strong>: corre como script, se versiona en git.</li>
+</ul>
+</div></div>
+<div class="fragment idea-clave">
+<p>En la sesión 2 esto se vuelve superpoder: cada slider recalcula solo lo necesario, y la libreta <strong>ya es</strong> una app.</p>
+</div>
+</section>
+<section id="python-mínimo-1-variables-y-tipos" class="slide level2 solo-codigo">
+<h2>Python mínimo 1 · variables y tipos</h2>
+<div id="e3654f10" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>potencia_panel <span class="op">=</span> <span class="dv">550</span>   <span class="co"># W, un panel típico</span></span>
+<span id="cb2-2"><a></a>eficiencia <span class="op">=</span> <span class="fl">0.20</span>      <span class="co"># fracción, sin unidades</span></span>
+<span id="cb2-3"><a></a>ciudad <span class="op">=</span> <span class="st">"Temixco"</span></span>
+<span id="cb2-4"><a></a><span class="bu">type</span>(potencia_panel), <span class="bu">type</span>(eficiencia), <span class="bu">type</span>(ciudad)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>(int, float, str)</code></pre>
+</div>
+</div>
+<p>Una variable es un nombre pegado a un valor. El tipo (<code>int</code>, <code>float</code>, <code>str</code>) se lo da el valor, no tú. Los comentarios con <code>#</code> documentan <strong>las unidades</strong>: en energía, la mitad de los errores son de unidades.</p>
+</section>
+<section id="python-mínimo-2-listas" class="slide level2 solo-codigo">
+<h2>Python mínimo 2 · listas</h2>
+<div id="7b44a4db" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>ciudades <span class="op">=</span> [<span class="st">"Temixco"</span>, <span class="st">"Mérida"</span>, <span class="st">"Tijuana"</span>, <span class="st">"La Paz"</span>]</span>
+<span id="cb4-2"><a></a>ciudades[<span class="dv">0</span>], ciudades[<span class="op">-</span><span class="dv">1</span>], <span class="bu">len</span>(ciudades)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>('Temixco', 'La Paz', 4)</code></pre>
+</div>
+</div>
+<p>Una lista es una colección ordenada. Se indexa desde <strong>cero</strong>, y <code>-1</code> es el último elemento. En la sesión 2, tu app recorrerá una lista de ciudades exactamente así.</p>
+</section>
+<section id="python-mínimo-3-diccionarios" class="slide level2 solo-codigo">
+<h2>Python mínimo 3 · diccionarios</h2>
+<div id="5b53ceba" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>sitio <span class="op">=</span> {<span class="st">"nombre"</span>: <span class="st">"Temixco"</span>, <span class="st">"lat"</span>: <span class="fl">18.84</span>,</span>
+<span id="cb6-2"><a></a>         <span class="st">"lon"</span>: <span class="op">-</span><span class="fl">99.24</span>, <span class="st">"altitud"</span>: <span class="dv">1220</span>}</span>
+<span id="cb6-3"><a></a>sitio[<span class="st">"lat"</span>]</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>18.84</code></pre>
+</div>
+</div>
+<p>Un diccionario guarda pares <strong>clave → valor</strong>. Es la forma natural de describir <em>un</em> sitio; una tabla de pandas será la forma natural de describir <em>muchos</em>.</p>
+</section>
+<section id="python-mínimo-4-funciones" class="slide level2 solo-codigo">
+<h2>Python mínimo 4 · funciones</h2>
+<div id="b1f634fa" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> kwh_mensuales(area_m2, hsp<span class="op">=</span><span class="fl">5.5</span>, eficiencia<span class="op">=</span><span class="fl">0.20</span>):</span>
+<span id="cb8-2"><a></a>    <span class="cf">return</span> area_m2 <span class="op">*</span> hsp <span class="op">*</span> eficiencia <span class="op">*</span> <span class="dv">30</span></span>
+<span id="cb8-3"><a></a></span>
+<span id="cb8-4"><a></a><span class="ss">f"</span><span class="sc">{</span>kwh_mensuales(<span class="dv">10</span>)<span class="sc">:.0f}</span><span class="ss"> kWh al mes con 10 m²"</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>'330 kWh al mes con 10 m²'</code></pre>
+</div>
+</div>
+<p>Una función empaca un cálculo con nombre y valores por defecto. La regla de tres de los instaladores solares: área × <em>horas solares pico</em> × eficiencia × 30 días.</p>
+<div class="small">
+<p>Ese <code>hsp=5.5</code> es un <strong>número mágico</strong> por ahora. Al final de la sesión lo vamos a calcular de verdad, para tu techo y tu clima.</p>
+</div>
+</section></section>
+<section>
+<section id="el-código-celda-por-celda" class="title-slide slide level1 titulo-seccion center">
+<h1>El código, celda por celda</h1>
+
+</section>
+<section id="celda-1-las-herramientas" class="slide level2 solo-codigo">
+<h2>Celda 1 · Las herramientas</h2>
+<div id="e814d0f2" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-3"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-4"><a></a><span class="im">from</span> pvlib.location <span class="im">import</span> Location</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Importamos las bibliotecas: pandas para tablas con tiempo, numpy para matemáticas, matplotlib para gráficas y pvlib para la física solar.</p>
+</section>
+<section id="celda-2-el-lugar" class="slide level2 solo-codigo">
+<h2>Celda 2 · El lugar</h2>
+<div id="95416542" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>temixco <span class="op">=</span> Location(latitude<span class="op">=</span><span class="fl">18.84</span>, longitude<span class="op">=-</span><span class="fl">99.24</span>,</span>
+<span id="cb11-2"><a></a>                   tz<span class="op">=</span><span class="st">"America/Mexico_City"</span>,</span>
+<span id="cb11-3"><a></a>                   altitude<span class="op">=</span><span class="dv">1220</span>, name<span class="op">=</span><span class="st">"Temixco"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Creamos el sitio: dónde está Temixco (la casa del IER-UNAM), en qué zona horaria y a qué altura.</p>
+</section>
+<section id="celda-3-el-cuándo" class="slide level2 solo-codigo">
+<h2>Celda 3 · El cuándo</h2>
+<div id="4465f85f" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>horas <span class="op">=</span> pd.date_range(<span class="st">"2026-03-21"</span>, <span class="st">"2026-03-22"</span>,</span>
+<span id="cb12-2"><a></a>                      freq<span class="op">=</span><span class="st">"10min"</span>, tz<span class="op">=</span>temixco.tz)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Creamos el reloj: un instante cada 10 minutos durante el 21 de marzo, en hora local de Temixco.</p>
+</section>
+<section id="celda-4-el-cielo-despejado" class="slide level2 solo-codigo">
+<h2>Celda 4 · El cielo despejado</h2>
+<div id="c1b636f5" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>cielo <span class="op">=</span> temixco.get_clearsky(horas, model<span class="op">=</span><span class="st">"ineichen"</span>,</span>
+<span id="cb13-2"><a></a>                             linke_turbidity<span class="op">=</span><span class="fl">3.0</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Calculamos la irradiancia de un día sin nubes: una tabla con GHI, DNI y DHI para cada instante.</p>
+</section>
+<section id="celda-5-la-gráfica" class="slide level2 solo-codigo">
+<h2>Celda 5 · La gráfica</h2>
+<div id="8852d02e" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">2.6</span>))</span>
+<span id="cb14-2"><a></a>cielo[[<span class="st">"ghi"</span>, <span class="st">"dni"</span>, <span class="st">"dhi"</span>]].plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb14-3"><a></a>ax.set_ylabel(<span class="st">"Irradiancia (W/m²)"</span>)</span>
+<span id="cb14-4"><a></a>ax.set_xlabel(<span class="st">"Hora local"</span>)</span>
+<span id="cb14-5"><a></a>ax.legend([<span class="st">"GHI"</span>, <span class="st">"DNI"</span>, <span class="st">"DHI"</span>], frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb14-6"><a></a>ax.grid(alpha<span class="op">=</span><span class="fl">.3</span>)</span>
+<span id="cb14-7"><a></a>plt.tight_layout()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-12-output-1.png" width="857" height="240"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="la-tabla-cielo-un-renglón-por-instante-tres-columnas" class="slide level2 solo-codigo">
+<h2>La tabla <code>cielo</code>: un renglón por instante, tres columnas</h2>
+<div id="fdd1109c" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>dia <span class="op">=</span> cielo.loc[<span class="st">"2026-03-21 06:00"</span>:<span class="st">"2026-03-21 18:00"</span>]</span>
+<span id="cb15-2"><a></a>dia.iloc[::<span class="dv">18</span>].<span class="bu">round</span>(<span class="dv">0</span>)     <span class="co"># un renglón cada 3 horas</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ghi</th>
+<th data-quarto-table-cell-role="th">dni</th>
+<th data-quarto-table-cell-role="th">dhi</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-03-21 06:00:00-06:00</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2026-03-21 09:00:00-06:00</th>
+<td>543.0</td>
+<td>878.0</td>
+<td>76.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-03-21 12:00:00-06:00</th>
+<td>1048.0</td>
+<td>995.0</td>
+<td>121.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2026-03-21 15:00:00-06:00</th>
+<td>866.0</td>
+<td>965.0</td>
+<td>105.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-03-21 18:00:00-06:00</th>
+<td>125.0</td>
+<td>518.0</td>
+<td>30.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>El índice es la hora local. Cada columna es una irradiancia en W/m².</p>
+</section>
+<section id="columna-ghi-global-horizontal" class="slide level2 solo-codigo">
+<h2>Columna <code>ghi</code> · global horizontal</h2>
+<div id="64e9a561" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>ax <span class="op">=</span> cielo[<span class="st">"ghi"</span>].plot(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">2.6</span>), lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb16-2"><a></a>ax.set_ylabel(<span class="st">"GHI (W/m²)"</span>)<span class="op">;</span> ax.set_ylim(<span class="dv">0</span>, <span class="dv">1100</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-14-output-1.png" width="775" height="253"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Todo lo que cae sobre un metro cuadrado de piso horizontal.</p>
+</section>
+<section id="columna-dni-directa-normal" class="slide level2 solo-codigo">
+<h2>Columna <code>dni</code> · directa normal</h2>
+<div id="ff000f5e" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>ax <span class="op">=</span> cielo[<span class="st">"dni"</span>].plot(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">2.6</span>), lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb17-2"><a></a>ax.set_ylabel(<span class="st">"DNI (W/m²)"</span>)<span class="op">;</span> ax.set_ylim(<span class="dv">0</span>, <span class="dv">1100</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-15-output-1.png" width="775" height="253"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Lo que llega en línea recta desde el disco solar, medido de frente al Sol.</p>
+</section>
+<section id="columna-dhi-difusa-horizontal" class="slide level2 solo-codigo">
+<h2>Columna <code>dhi</code> · difusa horizontal</h2>
+<div id="351bb21a" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>ax <span class="op">=</span> cielo[<span class="st">"dhi"</span>].plot(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">2.6</span>), lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb18-2"><a></a>ax.set_ylabel(<span class="st">"DHI (W/m²)"</span>)<span class="op">;</span> ax.set_ylim(<span class="dv">0</span>, <span class="dv">1100</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-16-output-1.png" width="775" height="253"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Lo que llega del resto del cielo, sin el disco solar: la luz que hay en la sombra.</p>
+</section></section>
+<section>
+<section id="radiación-sobre-una-superficie-inclinada" class="title-slide slide level1 titulo-seccion center">
+<h1>Radiación sobre una superficie inclinada</h1>
+
+</section>
+<section id="la-ecuación-de-la-tabla-cielo-a-una-superficie" class="slide level2">
+<h2>La ecuación: de la tabla <code>cielo</code> a una superficie</h2>
+<p><span class="math display">\[
+G_{\text{sup}} =
+\underbrace{\text{DNI}\cdot\cos\theta}_{\text{1 · directa}}
+\;+\;
+\underbrace{\text{DHI}\cdot\frac{1+\cos\beta}{2}}_{\text{2 · difusa del cielo}}
+\;+\;
+\underbrace{\text{GHI}\cdot\rho\cdot\frac{1-\cos\beta}{2}}_{\text{3 · reflejada por el suelo}}
+\]</span></p>
+<p>Tres caminos, y cada uno usa una columna distinta de la tabla. Solo aparecen tres datos nuevos:</p>
+<ul>
+<li><span class="math inline">\(\beta\)</span>: <strong>inclinación</strong> de la superficie. 0° = horizontal, 90° = pared.</li>
+<li><span class="math inline">\(\theta\)</span>: <strong>ángulo de incidencia</strong>, entre el haz solar y la normal a la superficie.</li>
+<li><span class="math inline">\(\rho\)</span>: <strong>albedo</strong>, la fracción de la luz que el suelo rebota.</li>
+</ul>
+</section>
+<section id="término-1-directa-textdnicdotcostheta" class="slide level2 smaller">
+<h2>Término 1 · Directa: <span class="math inline">\(\text{DNI}\cdot\cos\theta\)</span></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div id="640242f7" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-17-output-1.png" width="509" height="325"></p>
+<figcaption>Vista lateral: superficie inclinada β, su normal y el haz solar.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><span class="math inline">\(\theta\)</span> es el ángulo entre el <strong>haz solar</strong> y la <strong>normal</strong> a la superficie.</li>
+<li>Si el Sol está de frente, <span class="math inline">\(\theta = 0\)</span>, <span class="math inline">\(\cos\theta = 1\)</span> y llega <strong>toda</strong> la DNI.</li>
+<li>Si el Sol está de lado, la misma luz se reparte sobre más área: <span class="math inline">\(\cos\theta\)</span> la reduce.</li>
+<li>Si el Sol está <strong>detrás</strong>, <span class="math inline">\(\cos\theta &lt; 0\)</span> y se toma 0: no hay directa.</li>
+<li><span class="math inline">\(\theta\)</span> sale de la superficie (<span class="math inline">\(\beta\)</span>, <span class="math inline">\(\gamma\)</span>) y de dónde está el Sol (<span class="math inline">\(\theta_z\)</span>, <span class="math inline">\(\gamma_s\)</span>): <span class="math display">\[\cos\theta = \cos\beta\cos\theta_z + \sin\beta\sin\theta_z\cos(\gamma_s - \gamma)\]</span></li>
+<li>Para el piso horizontal, <span class="math inline">\(\beta = 0\)</span> y <span class="math inline">\(\theta = \theta_z\)</span>: lo que ya usa la GHI.</li>
+</ul>
+</div></div>
+</section>
+<section id="término-2-difusa-del-cielo-textdhicdotdfrac1cosbeta2" class="slide level2 smaller">
+<h2>Término 2 · Difusa del cielo: <span class="math inline">\(\text{DHI}\cdot\dfrac{1+\cos\beta}{2}\)</span></h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>La DHI es lo que llega de <strong>toda la bóveda celeste</strong> a un piso horizontal, que la ve completa.</li>
+<li>Una superficie inclinada ve <strong>solo una parte</strong> de la bóveda. El factor <span class="math inline">\(\frac{1+\cos\beta}{2}\)</span> es esa fracción.</li>
+<li>Suponemos que el cielo brilla <strong>parejo</strong> en todas direcciones (modelo isotrópico). No es exacto, pero es simple y conservador.</li>
+<li>No depende de dónde está el Sol: solo de <span class="math inline">\(\beta\)</span>.</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Superficie</th>
+<th><span class="math inline">\(\beta\)</span></th>
+<th>Fracción de la bóveda</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>horizontal</td>
+<td>0°</td>
+<td>1: toda</td>
+</tr>
+<tr class="even">
+<td>inclinada</td>
+<td>30°</td>
+<td>0.93</td>
+</tr>
+<tr class="odd">
+<td>pared</td>
+<td>90°</td>
+<td>½</td>
+</tr>
+<tr class="even">
+<td>boca abajo</td>
+<td>180°</td>
+<td>0: nada</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section id="término-3-reflejada-por-el-suelo-textghicdotrhocdotdfrac1-cosbeta2" class="slide level2 smaller">
+<h2>Término 3 · Reflejada por el suelo: <span class="math inline">\(\text{GHI}\cdot\rho\cdot\dfrac{1-\cos\beta}{2}\)</span></h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li><strong>GHI</strong>: lo que cae al suelo (por eso usa la columna global horizontal).</li>
+<li><span class="math inline">\(\rho\)</span>, <strong>albedo</strong>: la fracción que el suelo rebota, entre 0 (negro) y 1 (blanco).</li>
+<li><span class="math inline">\(\frac{1-\cos\beta}{2}\)</span>: la <strong>fracción del suelo</strong> que la superficie ve. Es la que le falta del cielo: los dos factores suman 1.</li>
+<li>Un piso horizontal no ve el suelo: 0. Una pared ve la mitad: <span class="math inline">\(\rho\cdot\text{GHI}/2\)</span>.</li>
+<li>El albedo es una <strong>suposición</strong>: hay que anotarla y probar cuánto pesa.</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Suelo</th>
+<th><span class="math inline">\(\rho\)</span> típico</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>asfalto</td>
+<td>0.10</td>
+</tr>
+<tr class="even">
+<td>pasto</td>
+<td>0.20</td>
+</tr>
+<tr class="odd">
+<td>concreto</td>
+<td>0.30</td>
+</tr>
+<tr class="even">
+<td>arena</td>
+<td>0.40</td>
+</tr>
+<tr class="odd">
+<td>techo blanco</td>
+<td>0.70</td>
+</tr>
+<tr class="even">
+<td>nieve fresca</td>
+<td>0.85</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section id="celda-6-la-posición-del-sol" class="slide level2 solo-codigo">
+<h2>Celda 6 · La posición del Sol</h2>
+<div id="09797add" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>sol <span class="op">=</span> temixco.get_solarposition(horas)</span>
+<span id="cb19-2"><a></a>angulos <span class="op">=</span> sol[[<span class="st">"apparent_zenith"</span>, <span class="st">"azimuth"</span>]]</span>
+<span id="cb19-3"><a></a>angulos.loc[dia.index[::<span class="dv">18</span>]].<span class="bu">round</span>(<span class="dv">1</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">apparent_zenith</th>
+<th data-quarto-table-cell-role="th">azimuth</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-03-21 06:00:00-06:00</th>
+<td>100.3</td>
+<td>86.1</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2026-03-21 09:00:00-06:00</th>
+<td>57.9</td>
+<td>101.8</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-03-21 12:00:00-06:00</th>
+<td>21.3</td>
+<td>148.3</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2026-03-21 15:00:00-06:00</th>
+<td>38.0</td>
+<td>245.1</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-03-21 18:00:00-06:00</th>
+<td>79.4</td>
+<td>266.9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Para cada instante, dónde está el Sol: el ángulo cenital, desde la vertical, y el azimut, con 0° = N, 90° = E, 180° = S. La tabla <code>sol</code> trae más columnas; estas dos son las que usa la ecuación.</p>
+</section>
+<section id="cómo-se-usan-los-dos-ángulos" class="slide level2">
+<h2>Cómo se usan los dos ángulos</h2>
+<div id="280b53dd" class="cell" data-execution_count="18">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-19-output-1.png" width="937" height="468"></p>
+<figcaption>Izquierda: vista de lado. Derecha: vista desde arriba, con la trayectoria del Sol del 21 de marzo y la pared al este.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="math inline">\(\theta_z\)</span> se mide desde la vertical. <span class="math inline">\(\gamma_s\)</span> se mide sobre el suelo, desde el norte y en sentido horario. La pared al este solo tiene al Sol de frente mientras <span class="math inline">\(\gamma_s\)</span> está entre 0° y 180°: por la mañana.</p>
+</section>
+<section id="celda-7-la-ecuación-en-pvlib" class="slide level2 solo-codigo">
+<h2>Celda 7 · La ecuación en pvlib</h2>
+<div id="719a7046" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="im">from</span> pvlib <span class="im">import</span> irradiance</span>
+<span id="cb20-2"><a></a>pared <span class="op">=</span> irradiance.get_total_irradiance(</span>
+<span id="cb20-3"><a></a>    surface_tilt<span class="op">=</span><span class="dv">90</span>, surface_azimuth<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb20-4"><a></a>    solar_zenith<span class="op">=</span>sol[<span class="st">"apparent_zenith"</span>],</span>
+<span id="cb20-5"><a></a>    solar_azimuth<span class="op">=</span>sol[<span class="st">"azimuth"</span>],</span>
+<span id="cb20-6"><a></a>    dni<span class="op">=</span>cielo[<span class="st">"dni"</span>], dhi<span class="op">=</span>cielo[<span class="st">"dhi"</span>],</span>
+<span id="cb20-7"><a></a>    ghi<span class="op">=</span>cielo[<span class="st">"ghi"</span>], albedo<span class="op">=</span><span class="fl">0.20</span>,</span>
+<span id="cb20-8"><a></a>    model<span class="op">=</span><span class="st">"isotropic"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Una pared vertical (β = 90°) que mira al este (γ = 90°) con pasto enfrente (ρ = 0.20).</p>
+</section>
+<section id="la-tabla-pared-los-tres-términos-y-su-suma" class="slide level2 solo-codigo">
+<h2>La tabla <code>pared</code>: los tres términos y su suma</h2>
+<div id="42c836c2" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a>pared.loc[dia.index[::<span class="dv">18</span>]].<span class="bu">round</span>(<span class="dv">0</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">poa_global</th>
+<th data-quarto-table-cell-role="th">poa_direct</th>
+<th data-quarto-table-cell-role="th">poa_diffuse</th>
+<th data-quarto-table-cell-role="th">poa_sky_diffuse</th>
+<th data-quarto-table-cell-role="th">poa_ground_diffuse</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-03-21 06:00:00-06:00</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2026-03-21 09:00:00-06:00</th>
+<td>820.0</td>
+<td>728.0</td>
+<td>92.0</td>
+<td>38.0</td>
+<td>54.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-03-21 12:00:00-06:00</th>
+<td>355.0</td>
+<td>190.0</td>
+<td>166.0</td>
+<td>61.0</td>
+<td>105.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2026-03-21 15:00:00-06:00</th>
+<td>139.0</td>
+<td>0.0</td>
+<td>139.0</td>
+<td>53.0</td>
+<td>87.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-03-21 18:00:00-06:00</th>
+<td>27.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>15.0</td>
+<td>13.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p><code>poa_direct</code>, <code>poa_sky_diffuse</code> y <code>poa_ground_diffuse</code> son los términos 1, 2 y 3. <code>poa_diffuse</code> suma los dos últimos y <code>poa_global</code> es el total: lo que recibe la pared.</p>
+</section></section>
+<section>
+<section id="de-la-potencia-a-la-energía" class="title-slide slide level1 titulo-seccion center">
+<h1>De la potencia a la energía</h1>
+
+</section>
+<section id="energía-el-área-bajo-la-curva" class="slide level2">
+<h2>Energía: el área bajo la curva</h2>
+<div id="c080580a" class="cell" data-execution_count="21">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-22-output-1.png" width="857" height="297"></p>
+<figcaption>Irradiancia total sobre la pared al este durante el día. El área sombreada es la energía.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><code>poa_global</code> es <strong>potencia</strong> por metro cuadrado en cada instante: W/m². Como la velocidad de un coche.</li>
+<li>La <strong>energía</strong> del día es lo acumulado: el <strong>área bajo la curva</strong>. Como la distancia recorrida.</li>
+<li>Con renglones cada 10 minutos, el área es la suma de renglones × 10/60 h. Entre 1000 para pasar de Wh a kWh.</li>
+</ul>
+</section>
+<section id="celda-8-la-energía-del-día" class="slide level2 solo-codigo">
+<h2>Celda 8 · La energía del día</h2>
+<div id="8d94995c" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a>dt_h <span class="op">=</span> <span class="dv">10</span> <span class="op">/</span> <span class="dv">60</span>                        <span class="co"># horas por renglón</span></span>
+<span id="cb22-2"><a></a>energia <span class="op">=</span> pared[<span class="st">"poa_global"</span>].<span class="bu">sum</span>() <span class="op">*</span> dt_h <span class="op">/</span> <span class="dv">1000</span></span>
+<span id="cb22-3"><a></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>energia<span class="sc">:.2f}</span><span class="ss"> kWh/m² en el día"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4.10 kWh/m² en el día</code></pre>
+</div>
+</div>
+<p>Sumamos todos los renglones de <code>poa_global</code> y multiplicamos por la duración de cada uno. Es el área bajo la curva, en kWh por metro cuadrado de pared.</p>
+</section>
+<section id="celda-9-cuatro-paredes" class="slide level2 solo-codigo">
+<h2>Celda 9 · Cuatro paredes</h2>
+<div id="3137fd67" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a>orientaciones <span class="op">=</span> {<span class="st">"Norte"</span>: <span class="dv">0</span>, <span class="st">"Este"</span>: <span class="dv">90</span>,</span>
+<span id="cb24-2"><a></a>                 <span class="st">"Sur"</span>: <span class="dv">180</span>, <span class="st">"Oeste"</span>: <span class="dv">270</span>}</span>
+<span id="cb24-3"><a></a>paredes <span class="op">=</span> {}</span>
+<span id="cb24-4"><a></a><span class="cf">for</span> nombre, azimut <span class="kw">in</span> orientaciones.items():</span>
+<span id="cb24-5"><a></a>    poa <span class="op">=</span> irradiance.get_total_irradiance(</span>
+<span id="cb24-6"><a></a>        surface_tilt<span class="op">=</span><span class="dv">90</span>, surface_azimuth<span class="op">=</span>azimut,</span>
+<span id="cb24-7"><a></a>        solar_zenith<span class="op">=</span>sol[<span class="st">"apparent_zenith"</span>],</span>
+<span id="cb24-8"><a></a>        solar_azimuth<span class="op">=</span>sol[<span class="st">"azimuth"</span>],</span>
+<span id="cb24-9"><a></a>        dni<span class="op">=</span>cielo[<span class="st">"dni"</span>], dhi<span class="op">=</span>cielo[<span class="st">"dhi"</span>],</span>
+<span id="cb24-10"><a></a>        ghi<span class="op">=</span>cielo[<span class="st">"ghi"</span>], albedo<span class="op">=</span><span class="fl">0.20</span>)</span>
+<span id="cb24-11"><a></a>    paredes[nombre] <span class="op">=</span> poa[<span class="st">"poa_global"</span>]</span>
+<span id="cb24-12"><a></a>paredes <span class="op">=</span> pd.DataFrame(paredes)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Un ciclo: la celda 7 cuatro veces, cambiando solo el azimut. Guardamos <code>poa_global</code> de cada pared en una tabla.</p>
+</section>
+<section id="celda-10-la-energía-de-cada-pared" class="slide level2 solo-codigo">
+<h2>Celda 10 · La energía de cada pared</h2>
+<div id="8b401f7c" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a>energias <span class="op">=</span> paredes.<span class="bu">sum</span>() <span class="op">*</span> dt_h <span class="op">/</span> <span class="dv">1000</span></span>
+<span id="cb25-2"><a></a>energias.<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>Norte    1.27
+Este     4.10
+Sur      3.48
+Oeste    4.10
+dtype: float64</code></pre>
+</div>
+</div>
+<p>kWh/m² en el día para cada orientación, con el mismo cálculo de la celda 8 aplicado a las cuatro columnas a la vez. <strong>¿Sorpresa?</strong> En Temixco, la pared sur <em>no</em> gana.</p>
+</section>
+<section id="pared-al-este" class="slide level2">
+<h2>Pared al este</h2>
+<div id="761c3add" class="cell" data-execution_count="26">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-27-output-1.png" width="951" height="316"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Pico en la mañana, cuando el Sol está de frente. Después del mediodía solo recibe difusa y reflejada. Área bajo la curva: <strong>4.10 kWh/m²</strong>.</p>
+</section>
+<section id="pared-al-sur" class="slide level2">
+<h2>Pared al sur</h2>
+<div id="dc4f5df6" class="cell" data-execution_count="27">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-28-output-1.png" width="951" height="316"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Ve al Sol todo el día… pero en Temixco el Sol del equinoccio pasa <strong>casi por el cenit</strong> (θ<sub>z</sub> ≈ 19° al mediodía): una pared vertical lo ve siempre de reojo. Junta <strong>3.48 kWh/m²</strong>, menos que este u oeste. En el trópico, <strong>las paredes son malos colectores</strong>.</p>
+</section>
+<section id="el-techo-le-gana-a-cualquier-pared" class="slide level2 solo-codigo">
+<h2>El techo le gana a cualquier pared</h2>
+<div id="da574a1d" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a>techo20 <span class="op">=</span> irradiance.get_total_irradiance(</span>
+<span id="cb27-2"><a></a>    surface_tilt<span class="op">=</span><span class="dv">20</span>, surface_azimuth<span class="op">=</span><span class="dv">180</span>,</span>
+<span id="cb27-3"><a></a>    solar_zenith<span class="op">=</span>sol[<span class="st">"apparent_zenith"</span>],</span>
+<span id="cb27-4"><a></a>    solar_azimuth<span class="op">=</span>sol[<span class="st">"azimuth"</span>],</span>
+<span id="cb27-5"><a></a>    dni<span class="op">=</span>cielo[<span class="st">"dni"</span>], dhi<span class="op">=</span>cielo[<span class="st">"dhi"</span>],</span>
+<span id="cb27-6"><a></a>    ghi<span class="op">=</span>cielo[<span class="st">"ghi"</span>], albedo<span class="op">=</span><span class="fl">0.20</span>)</span>
+<span id="cb27-7"><a></a>e_techo <span class="op">=</span> techo20[<span class="st">"poa_global"</span>].<span class="bu">sum</span>() <span class="op">*</span> dt_h <span class="op">/</span> <span class="dv">1000</span></span>
+<span id="cb27-8"><a></a><span class="bu">print</span>(<span class="ss">f"Techo a 20° al sur: </span><span class="sc">{</span>e_techo<span class="sc">:.2f}</span><span class="ss"> kWh/m² en el día"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Techo a 20° al sur: 8.10 kWh/m² en el día</code></pre>
+</div>
+</div>
+<p>Si el Sol va alto, hay que <strong>acostarse para verlo de frente</strong>: un techo a 20° junta <strong>2.0×</strong> lo de la mejor pared. Por eso los paneles se montan casi horizontales en México, y por eso tu techo es la mina.</p>
+</section>
+<section id="trayectoria-aparente-del-sol-el-mapa-completo" class="slide level2">
+<h2>Trayectoria aparente del Sol: el mapa completo</h2>
+<div id="c2422fd4" class="cell" data-execution_count="29">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-30-output-1.png" width="488" height="450"></p>
+<figcaption>Vista desde arriba. Azimut desde el norte en sentido horario; el centro es el cenit y el borde el horizonte. Trayectoria del 21 de marzo (línea gruesa) y de los solsticios (punteadas).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>El 21 de marzo el Sol pasa rozando el cenit: por eso ninguna pared lo ve bien y el techo gana. En junio, Temixco está <strong>al sur del Sol</strong>: la trayectoria cruza al lado norte y la pared norte sí recibe directa. En diciembre todo se recorre al sur.</p>
+</section></section>
+<section>
+<section id="datos-meteorológicos-reales" class="title-slide slide level1 titulo-seccion center">
+<h1>Datos meteorológicos reales</h1>
+
+</section>
+<section id="el-cielo-despejado-es-una-ficción-útil" class="slide level2 smaller">
+<h2>El cielo despejado es una ficción útil</h2>
+<ul>
+<li class="fragment">El modelo Ineichen responde “¿cuánto llegaría <strong>sin nubes</strong>?”. Perfecto para entender la geometría; malo para dimensionar un sistema: <strong>sobreestima</strong>.</li>
+<li class="fragment">Lo que necesitamos: un año de datos <strong>medidos</strong> (estación o satélite), hora por hora.</li>
+<li class="fragment"><strong>TMY</strong> (<em>typical meteorological year</em>): 8760 horas armadas mes a mes con los meses más “típicos” de ~15–20 años de datos. No es un año que ocurrió: es el año <strong>estadísticamente representativo</strong>.</li>
+</ul>
+<div class="fragment">
+<div class="idea-clave">
+<p>Dos maneras de conseguir un TMY: un archivo <strong>EPW</strong> (el formato estándar de la simulación de edificios) o pedírselo a <strong>PVGIS</strong> desde Python, para cualquier punto del mapa.</p>
+</div>
+</div>
+</section>
+<section id="celda-11-leer-un-archivo-epw" class="slide level2 solo-codigo">
+<h2>Celda 11 · Leer un archivo EPW</h2>
+<div id="4272be97" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a><span class="im">from</span> pvlib <span class="im">import</span> iotools</span>
+<span id="cb29-2"><a></a>epw, meta_epw <span class="op">=</span> iotools.read_epw(<span class="st">"data/epw/temixco.epw"</span>,</span>
+<span id="cb29-3"><a></a>                                 coerce_year<span class="op">=</span><span class="dv">2026</span>)</span>
+<span id="cb29-4"><a></a>epw[[<span class="st">"ghi"</span>, <span class="st">"dni"</span>, <span class="st">"dhi"</span>, <span class="st">"temp_air"</span>]].head(<span class="dv">3</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ghi</th>
+<th data-quarto-table-cell-role="th">dni</th>
+<th data-quarto-table-cell-role="th">dhi</th>
+<th data-quarto-table-cell-role="th">temp_air</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-01-01 00:00:00-06:00</th>
+<td>0.0</td>
+<td>-0.0</td>
+<td>0.0</td>
+<td>13.85</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2026-01-01 01:00:00-06:00</th>
+<td>0.0</td>
+<td>-0.0</td>
+<td>0.0</td>
+<td>11.21</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-01-01 02:00:00-06:00</th>
+<td>0.0</td>
+<td>-0.0</td>
+<td>0.0</td>
+<td>10.75</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Un EPW es texto plano: 8 renglones de encabezado y 8760 de datos. <code>read_epw</code> lo convierte en la misma tabla que ya conocemos —GHI, DNI, DHI— más temperatura y viento. <code>coerce_year</code> pone todas las horas en el mismo año.</p>
+</section>
+<section id="el-año-completo-de-un-vistazo" class="slide level2">
+<h2>El año completo, de un vistazo</h2>
+<div id="200dafd5" class="cell" data-execution_count="31">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a>diaria <span class="op">=</span> epw[<span class="st">"ghi"</span>].resample(<span class="st">"D"</span>).<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1000</span></span>
+<span id="cb30-2"><a></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">3</span>))</span>
+<span id="cb30-3"><a></a>ax.plot(diaria.index, diaria.values, lw<span class="op">=</span><span class="fl">0.8</span>, color<span class="op">=</span><span class="st">"#5c677d"</span>)</span>
+<span id="cb30-4"><a></a>ax.plot(diaria.rolling(<span class="dv">30</span>, center<span class="op">=</span><span class="va">True</span>).mean(), lw<span class="op">=</span><span class="fl">2.5</span>, color<span class="op">=</span><span class="st">"#f4a300"</span>)</span>
+<span id="cb30-5"><a></a>ax.set_ylabel(<span class="st">"kWh/m² al día"</span>)<span class="op">;</span> ax.grid(alpha<span class="op">=</span><span class="fl">.3</span>)</span>
+<span id="cb30-6"><a></a>plt.tight_layout()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-32-output-1.png" width="855" height="278"></p>
+<figcaption>GHI diaria en Temixco durante el año meteorológico típico (EPW).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>La línea gris es cada día; la ámbar, el promedio móvil de 30 días. Ahí está la temporada de lluvias — y ningún día real es la curva perfecta del cielo despejado.</p>
+</section>
+<section id="celda-12-cualquier-localidad-una-línea-pvgis" class="slide level2 solo-codigo">
+<h2>Celda 12 · Cualquier localidad, una línea: PVGIS</h2>
+<div id="edd2fd5c" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a>tmy, meta <span class="op">=</span> iotools.get_pvgis_tmy(<span class="fl">18.84</span>, <span class="op">-</span><span class="fl">99.24</span>,</span>
+<span id="cb31-2"><a></a>                                  map_variables<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb31-3"><a></a>                                  roll_utc_offset<span class="op">=-</span><span class="dv">6</span>,</span>
+<span id="cb31-4"><a></a>                                  coerce_year<span class="op">=</span><span class="dv">2026</span>)</span>
+<span id="cb31-5"><a></a>tmy[[<span class="st">"ghi"</span>, <span class="st">"dni"</span>, <span class="st">"dhi"</span>, <span class="st">"temp_air"</span>]].head(<span class="dv">3</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ghi</th>
+<th data-quarto-table-cell-role="th">dni</th>
+<th data-quarto-table-cell-role="th">dhi</th>
+<th data-quarto-table-cell-role="th">temp_air</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">time(Etc/GMT+6)</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-01-01 00:00:00-06:00</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>17.46</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2026-01-01 01:00:00-06:00</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>16.87</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2026-01-01 02:00:00-06:00</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>14.13</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>PVGIS (Comisión Europea) entrega el TMY de <strong>cualquier punto de América</strong>, derivado de satélite, sin registrarse. Ojo: lo entrega en <strong>UTC</strong>; <code>roll_utc_offset=-6</code> lo recorre a hora local. Si lo olvidas, tu sol sale a medianoche.</p>
+</section>
+<section id="las-nubes-mes-a-mes" class="slide level2">
+<h2>Las nubes, mes a mes</h2>
+<div id="92620847" class="cell" data-execution_count="33">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a>cielo_anio <span class="op">=</span> temixco.get_clearsky(tmy.index, model<span class="op">=</span><span class="st">"ineichen"</span>,</span>
+<span id="cb32-2"><a></a>                                  linke_turbidity<span class="op">=</span><span class="fl">3.0</span>)</span>
+<span id="cb32-3"><a></a>mensual <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb32-4"><a></a>    <span class="st">"cielo despejado"</span>: cielo_anio[<span class="st">"ghi"</span>].groupby(cielo_anio.index.month).<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1000</span>,</span>
+<span id="cb32-5"><a></a>    <span class="st">"año típico (PVGIS)"</span>: tmy[<span class="st">"ghi"</span>].groupby(tmy.index.month).<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1000</span>,</span>
+<span id="cb32-6"><a></a>})</span>
+<span id="cb32-7"><a></a>ax <span class="op">=</span> mensual.plot.bar(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">3.2</span>), color<span class="op">=</span>[<span class="st">"#5c677d"</span>, <span class="st">"#f4a300"</span>], width<span class="op">=</span><span class="fl">0.75</span>)</span>
+<span id="cb32-8"><a></a>ax.set_xticklabels(<span class="bu">list</span>(<span class="st">"EFMAMJJASOND"</span>), rotation<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb32-9"><a></a>ax.set_ylabel(<span class="st">"kWh/m² al mes"</span>)<span class="op">;</span> ax.grid(alpha<span class="op">=</span><span class="fl">.3</span>, axis<span class="op">=</span><span class="st">"y"</span>)</span>
+<span id="cb32-10"><a></a>ax.legend(frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb32-11"><a></a>plt.tight_layout()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-34-output-1.png" width="855" height="297"></p>
+<figcaption>GHI mensual en Temixco: cielo despejado vs año meteorológico típico.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Las nubes le cuestan a Temixco <strong>17%</strong> del recurso anual — y casi todo se concentra en la temporada de lluvias.</p>
+</section></section>
+<section>
+<section id="tu-primer-modelo-fotovoltaico" class="title-slide slide level1 titulo-seccion center">
+<h1>Tu primer modelo fotovoltaico</h1>
+
+</section>
+<section id="celda-13-el-techo-hora-por-hora-todo-el-año" class="slide level2 solo-codigo">
+<h2>Celda 13 · El techo, hora por hora, todo el año</h2>
+<div id="207cfad7" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a></a>sol_tmy <span class="op">=</span> temixco.get_solarposition(tmy.index)</span>
+<span id="cb33-2"><a></a>techo <span class="op">=</span> irradiance.get_total_irradiance(</span>
+<span id="cb33-3"><a></a>    surface_tilt<span class="op">=</span><span class="dv">20</span>, surface_azimuth<span class="op">=</span><span class="dv">180</span>,</span>
+<span id="cb33-4"><a></a>    solar_zenith<span class="op">=</span>sol_tmy[<span class="st">"apparent_zenith"</span>],</span>
+<span id="cb33-5"><a></a>    solar_azimuth<span class="op">=</span>sol_tmy[<span class="st">"azimuth"</span>],</span>
+<span id="cb33-6"><a></a>    dni<span class="op">=</span>tmy[<span class="st">"dni"</span>], ghi<span class="op">=</span>tmy[<span class="st">"ghi"</span>], dhi<span class="op">=</span>tmy[<span class="st">"dhi"</span>],</span>
+<span id="cb33-7"><a></a>    albedo<span class="op">=</span><span class="fl">0.20</span>, model<span class="op">=</span><span class="st">"isotropic"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>La misma ecuación de los tres caminos, pero con el <strong>año típico</strong> en lugar del cielo despejado: un techo a 20° mirando al sur, 8760 renglones.</p>
+</section>
+<section id="celda-14-del-sol-a-los-kwh-del-sistema" class="slide level2 solo-codigo">
+<h2>Celda 14 · Del sol a los kWh del sistema</h2>
+<div id="3c4877e9" class="cell" data-execution_count="36">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a>area <span class="op">=</span> <span class="dv">10</span>          <span class="co"># m² de paneles</span></span>
+<span id="cb34-2"><a></a>eficiencia <span class="op">=</span> <span class="fl">0.20</span>  <span class="co"># 20 %</span></span>
+<span id="cb34-3"><a></a>kwh_anio <span class="op">=</span> techo[<span class="st">"poa_global"</span>].<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1000</span> <span class="op">*</span> area <span class="op">*</span> eficiencia</span>
+<span id="cb34-4"><a></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>kwh_anio<span class="sc">:,.0f}</span><span class="ss"> kWh al año con </span><span class="sc">{</span>area<span class="sc">}</span><span class="ss"> m²"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4,660 kWh al año con 10 m²</code></pre>
+</div>
+</div>
+<p>Cada renglón del TMY dura 1 hora, así que la suma ya integra. Entre 1000 → kWh/m²; por área y eficiencia → la energía del <strong>sistema</strong>. Modelo mínimo: sin temperatura ni pérdidas — eso se refina después.</p>
+</section>
+<section id="el-número-mágico-revelado" class="slide level2 solo-codigo">
+<h2>El número mágico, revelado</h2>
+<div id="1af5f127" class="cell" data-execution_count="37">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a>hsp <span class="op">=</span> techo[<span class="st">"poa_global"</span>].<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1000</span> <span class="op">/</span> <span class="dv">365</span></span>
+<span id="cb36-2"><a></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>hsp<span class="sc">:.2f}</span><span class="ss"> horas solares pico promedio en Temixco"</span>)</span>
+<span id="cb36-3"><a></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>kwh_mensuales(<span class="dv">10</span>, hsp<span class="op">=</span>hsp)<span class="sc">:,.0f}</span><span class="ss"> kWh/mes con nuestra función"</span>)</span>
+<span id="cb36-4"><a></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>kwh_anio <span class="op">/</span> <span class="dv">12</span><span class="sc">:,.0f}</span><span class="ss"> kWh/mes con el año típico completo"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>6.38 horas solares pico promedio en Temixco
+383 kWh/mes con nuestra función
+388 kWh/mes con el año típico completo</code></pre>
+</div>
+</div>
+<p>La <strong>hora solar pico</strong> son los kWh/m²-día que recibe el plano del arreglo. El <code>hsp=5.5</code> del inicio era esto. Ya no es un número mágico: <strong>sale de tu techo y de tu clima</strong>.</p>
+</section>
+<section id="la-cosecha-mes-a-mes" class="slide level2">
+<h2>La cosecha, mes a mes</h2>
+<div id="0c5ae3e7" class="cell" data-execution_count="38">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a>kwh_mes <span class="op">=</span> techo[<span class="st">"poa_global"</span>].groupby(techo.index.month).<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1000</span> <span class="op">*</span> area <span class="op">*</span> eficiencia</span>
+<span id="cb38-2"><a></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">3.2</span>))</span>
+<span id="cb38-3"><a></a>ax.bar(kwh_mes.index, kwh_mes.values, color<span class="op">=</span><span class="st">"#f4a300"</span>)</span>
+<span id="cb38-4"><a></a>ax.set_xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">13</span>))<span class="op">;</span> ax.set_xticklabels(<span class="bu">list</span>(<span class="st">"EFMAMJJASOND"</span>))</span>
+<span id="cb38-5"><a></a>ax.set_ylabel(<span class="st">"kWh del sistema"</span>)<span class="op">;</span> ax.grid(alpha<span class="op">=</span><span class="fl">.3</span>, axis<span class="op">=</span><span class="st">"y"</span>)</span>
+<span id="cb38-6"><a></a>plt.tight_layout()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="sesion1_files/figure-revealjs/cell-39-output-1.png" width="855" height="298"></p>
+<figcaption>Energía mensual del sistema de 10 m² en Temixco (año típico).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>¿Por qué el pico está en primavera y no en verano? (Pista: ya viste la gráfica de las nubes.) En la sesión 3, esta curva se cruza contra tu <strong>recibo de CFE</strong>.</p>
+</section></section>
+<section>
+<section id="cierre" class="title-slide slide level1 titulo-seccion center">
+<h1>Cierre</h1>
+
+</section>
+<section id="reproducible-desde-la-primera-línea" class="slide level2 smaller">
+<h2>Reproducible desde la primera línea</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>Todo el taller vive en un repositorio: diapositivas, libretas y datos.</li>
+<li>Cada libreta declara sus dependencias en su encabezado; con <a href="https://docs.astral.sh/uv/">uv</a> corre igual en molab o en tu máquina:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a></a><span class="co"># /// script</span></span>
+<span id="cb39-2"><a></a><span class="co"># requires-python = "&gt;=3.12"</span></span>
+<span id="cb39-3"><a></a><span class="co"># dependencies = ["marimo", "pandas",</span></span>
+<span id="cb39-4"><a></a><span class="co">#                 "pvlib", "matplotlib"]</span></span>
+<span id="cb39-5"><a></a><span class="co"># ///</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a></a><span class="ex">uv</span> run marimo edit notebooks/s1_fundamentos.py</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<ul>
+<li>La libreta de marimo <strong>es</strong> un archivo <code>.py</code>: se lee, se versiona, se comparte.</li>
+<li>En molab no instalaste nada; en tu máquina tampoco hace falta más que uv.</li>
+<li>La narrativa computacional: texto, código y resultados <strong>en el mismo documento</strong>, regenerable desde cero.</li>
+</ul>
+</div></div>
+</section>
+<section id="reto-para-casa" class="slide level2 smaller">
+<h2>Reto para casa</h2>
+<ol type="1">
+<li><strong>Tu ciudad</strong>: saca su latitud y longitud de Google Maps (clic derecho → copiar coordenadas), pídele el TMY a PVGIS y calcula sus horas solares pico. ¿Le gana a Temixco?</li>
+<li><strong>Tu techo real</strong>: cambia <code>surface_tilt</code> y <code>surface_azimuth</code> a los de tu casa. ¿Cuánto pierdes respecto a 20° al sur?</li>
+<li>📄 <strong>Consigue un recibo de CFE</strong> para la sesión 3.</li>
+</ol>
+<div class="fragment">
+<div class="idea-clave">
+<p><strong>Próxima sesión</strong>: la libreta se convierte en app — sliders, menús, un catálogo de 18 ciudades y modo webapp sin código visible.</p>
+</div>
+<div class="small">
+<p>Material del taller: diapositivas, libretas y datos en el repositorio · <a href="https://molab.marimo.io">molab.marimo.io</a></p>
+</div>
+
+
+</div>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>Mi techo, mis kWh, mi CO₂ · Sesión 1 · IER-UNAM</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiado");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiado");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/AltamarMx\.github\.io\/MiTecho_MisKwh_MiCO2\/");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
