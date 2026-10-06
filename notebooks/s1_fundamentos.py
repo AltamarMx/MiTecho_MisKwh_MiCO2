@@ -127,26 +127,25 @@ def _(mo):
     mo.md(r"""
     ## 5 · La reactividad en acción
 
-    Mueve el slider. No hay botón de "ejecutar": la celda de abajo **depende** del
-    slider, así que marimo la recalcula sola. Este es el superpoder que en la
-    sesión 2 convierte tu libreta en una app.
+    Cambia el `10` de la celda de abajo por otra área y observa: la celda que le
+    sigue se recalcula **sola**. No hay botón de "ejecutar": marimo sabe quién
+    depende de quién. (En la sesión 2, este mismo mecanismo, con sliders y menús,
+    convierte tu libreta en una app.)
     """)
     return
 
 
 @app.cell
-def _(mo):
-    area_arreglo = mo.ui.slider(1, 50, step=1, value=10,
-                                label="Área del arreglo (m²)")
-    area_arreglo
+def _():
+    area_arreglo = 10   # m² — cámbiame y mira la celda de abajo
     return (area_arreglo,)
 
 
 @app.cell
 def _(area_arreglo, kwh_mensuales, mo):
     mo.md(
-        f"**{kwh_mensuales(area_arreglo.value):.0f} kWh al mes** "
-        f"con {area_arreglo.value} m² (hsp = 5.5, eficiencia = 20 %)"
+        f"**{kwh_mensuales(area_arreglo):.0f} kWh al mes** "
+        f"con {area_arreglo} m² (hsp = 5.5, eficiencia = 20 %)"
     )
     return
 
@@ -182,7 +181,7 @@ def _(mo):
     ## Siguiente parada
 
     - [**s1_geometria_solar.py**](https://molab.marimo.io/github/AltamarMx/MiTecho_MisKwh_MiCO2/blob/main/notebooks/s1_geometria_solar.py):
-      la física del recurso solar, con sliders.
+      la física del recurso solar — cámbiale los ángulos y mira.
     - [**s1_meteo_pvlib.py**](https://molab.marimo.io/github/AltamarMx/MiTecho_MisKwh_MiCO2/blob/main/notebooks/s1_meteo_pvlib.py):
       clima real (EPW y PVGIS) y tu primer modelo fotovoltaico.
     """)

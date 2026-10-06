@@ -28,10 +28,11 @@ def _():
 @app.cell
 def _(mo):
     mo.md(r"""
-    # Geometría solar en Temixco, con sliders
+    # Geometría solar en Temixco
 
-    Es el mismo cálculo de la presentación, pero **reactivo**: mueve un control y
-    todo lo que depende de él se recalcula. No hay botón de "ejecutar".
+    Es el mismo cálculo de la presentación, pero **reactivo**: cambia un valor en
+    la celda de parámetros (β, γ, la fecha…) y todo lo que depende de él se
+    recalcula solo. No hay botón de "ejecutar".
 
     La ecuación de los tres caminos:
     directa ($\mathrm{DNI}\cos\theta$), difusa del cielo
@@ -49,13 +50,12 @@ def _(mo):
 
 
 @app.cell
-def _(mo):
-    fecha = mo.ui.date(value="2026-03-21", label="Fecha")
-    turbidez = mo.ui.slider(2.0, 7.0, step=0.1, value=3.0, label="Turbidez de Linke")
-    inclinacion = mo.ui.slider(0, 90, step=5, value=90, label="Inclinación β (°)")
-    azimut = mo.ui.slider(0, 355, step=5, value=90, label="Azimut γ (°): 0=N 90=E 180=S 270=O")
-    albedo = mo.ui.slider(0.0, 0.9, step=0.05, value=0.20, label="Albedo ρ")
-    mo.vstack([mo.hstack([fecha, turbidez]), mo.hstack([inclinacion, azimut, albedo])])
+def _():
+    fecha = "2026-03-21"   # prueba "2026-06-21" y "2026-12-21"
+    inclinacion = 90       # β (°): 0 = horizontal, 90 = pared
+    azimut = 90            # γ (°): 0 = N, 90 = E, 180 = S, 270 = O
+    albedo = 0.20          # ρ: pasto 0.20, concreto 0.30, techo blanco 0.70
+    turbidez = 3.0         # turbidez de Linke: 2 = muy limpio, 7 = bruma
     return albedo, azimut, fecha, inclinacion, turbidez
 
 
@@ -63,20 +63,20 @@ def _(mo):
 def _(Location, fecha, pd, turbidez):
     temixco = Location(latitude=18.84, longitude=-99.24,
                        tz="America/Mexico_City", altitude=1220, name="Temixco")
-    _inicio = pd.Timestamp(fecha.value)
+    _inicio = pd.Timestamp(fecha)
     horas = pd.date_range(_inicio, _inicio + pd.Timedelta(days=1), freq="10min", tz=temixco.tz)
     sol = temixco.get_solarposition(horas)
-    cielo = temixco.get_clearsky(horas, model="ineichen", linke_turbidity=turbidez.value)
+    cielo = temixco.get_clearsky(horas, model="ineichen", linke_turbidity=turbidez)
     return cielo, sol
 
 
 @app.cell
 def _(albedo, azimut, cielo, inclinacion, irradiance, sol):
     poa = irradiance.get_total_irradiance(
-        surface_tilt=inclinacion.value, surface_azimuth=azimut.value,
+        surface_tilt=inclinacion, surface_azimuth=azimut,
         solar_zenith=sol["apparent_zenith"], solar_azimuth=sol["azimuth"],
         dni=cielo["dni"], ghi=cielo["ghi"], dhi=cielo["dhi"],
-        albedo=albedo.value, model="isotropic")
+        albedo=albedo, model="isotropic")
     return (poa,)
 
 
