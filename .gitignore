@@ -1,0 +1,23 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+/.quarto/
+**/*.quarto_ipynb
+
+# macOS
+.DS_Store
+
+# Quarto
+/_site/
+/.quarto/
+
+# material de consulta (repo base del 6to Coloquio)
+/tmp/

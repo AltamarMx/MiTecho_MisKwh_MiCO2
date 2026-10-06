@@ -1,0 +1,13 @@
+project:
+  type: default
+  output-dir: _site
+  render:
+    - index.qmd
+    - sesion1.qmd
+
+lang: es
+
+execute:
+  echo: true
+  warning: false
+  freeze: auto   # solo re-ejecuta las celdas si el .qmd cambia

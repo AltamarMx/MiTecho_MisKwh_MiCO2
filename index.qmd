@@ -1,0 +1,44 @@
+---
+title: "Mi techo, mis kWh, mi CO₂"
+subtitle: "Taller práctico de ciencia de datos energética en Python · IER-UNAM"
+format:
+  html:
+    theme: flatly
+    toc: false
+---
+
+Taller práctico de **tres sesiones (6 horas)**, dirigido a estudiantes de ingeniería
+sin experiencia previa en Python. Cada participante construye una **aplicación web
+funcional** que estima, para cualquier ciudad de México, cuántos kWh generaría un
+sistema fotovoltaico, cuánto ahorraría con tarifa CFE y cuántos kg de CO₂ evitaría
+según la hora del día en la red nacional.
+
+Todo el taller corre en [molab](https://molab.marimo.io) (marimo en la nube): no hay
+que instalar nada, solo se necesita una cuenta de GitHub o de Google.
+
+## Sesiones
+
+| Sesión | Tema | Diapositivas | Libreta |
+|---|---|---|---|
+| 1 | Python, marimo y la física del recurso solar | [abrir](sesion1.qmd) | [![Abrir en molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/AltamarMx/MiTecho_MisKwh_MiCO2/blob/main/notebooks/s1_fundamentos.py) |
+| 2 | De la libreta a la app: controles interactivos | en preparación | en preparación |
+| 3 | El recibo y el CO₂: demanda, tarifa CFE y factor de emisión horario | en preparación | en preparación |
+
+## Qué te llevas
+
+- Tu primera **app web en Python**, sin escribir HTML ni JavaScript, exportable como
+  HTML autocontenido y defendible en un portafolio profesional.
+- El flujo completo de un *data scientist* energético: datos meteorológicos (EPW,
+  PVGIS), modelado fotovoltaico con `pvlib`, y el cruce de generación, demanda,
+  tarifa y huella de carbono horaria.
+- El insight que sostiene las redes inteligentes: **un kWh solar vale distinto según
+  la hora del día**.
+
+## Antes de llegar
+
+1. Crea tu cuenta en [molab.marimo.io](https://molab.marimo.io) (con GitHub o Google).
+2. Para la sesión 3: **trae un recibo de CFE** (el tuyo o el de tu casa).
+
+---
+
+Guillermo Barrios del Valle · Instituto de Energías Renovables, UNAM · gbv@ier.unam.mx

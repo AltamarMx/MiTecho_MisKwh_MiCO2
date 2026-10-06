@@ -1,0 +1,853 @@
+---
+title: "Mi techo, mis kWh, mi CO₂"
+subtitle: "Sesión 1 · Python, marimo y la física del recurso solar"
+author:
+  - name: "Guillermo Barrios del Valle"
+    affiliation: "Instituto de Energías Renovables, UNAM"
+    email: gbv@ier.unam.mx
+date: today
+date-format: "D [de] MMMM [de] YYYY"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: c/t
+    footer: "Mi techo, mis kWh, mi CO₂ · Sesión 1 · IER-UNAM"
+    transition: fade
+    incremental: false
+    code-line-numbers: true
+    code-overflow: wrap
+    code-copy: true
+    chalkboard: true
+    preview-links: auto
+    width: 1280
+    height: 720
+    toc: false
+jupyter: python3
+---
+
+## Antes de empezar: abre la libreta en molab {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+Hoy trabajamos en **molab**: marimo en la nube, **sin instalar nada**. Solo necesitas una cuenta de GitHub o de Google.
+
+[**Abrir la libreta en molab**](https://molab.marimo.io/github/AltamarMx/MiTecho_MisKwh_MiCO2/blob/main/notebooks/s1_fundamentos.py){.btn-molab}
+
+1. Entra a [molab.marimo.io](https://molab.marimo.io) con tu cuenta.
+2. Abre el enlace o escanea el código.
+3. molab monta el **repositorio completo**: la libreta, los datos, todo.
+
+::: {.small}
+La libreta es un archivo de Python puro (`notebooks/s1_fundamentos.py`) dentro del repositorio del taller.
+:::
+:::
+
+::: {.column width="45%"}
+```{python}
+#| echo: false
+import qrcode
+import matplotlib.pyplot as plt
+enlace = ("https://molab.marimo.io/github/AltamarMx/"
+          "MiTecho_MisKwh_MiCO2/blob/main/notebooks/s1_fundamentos.py")
+qr = qrcode.QRCode(border=1); qr.add_data(enlace); qr.make()
+fig, ax = plt.subplots(figsize=(3.4, 3.4))
+ax.imshow(qr.get_matrix(), cmap="binary"); ax.axis("off")
+plt.tight_layout()
+```
+:::
+
+::::
+
+## El taller: tres sesiones, una app {.smaller}
+
+| | Sesión | Construyes |
+|---|---|---|
+| 1 | Python, marimo y la física del recurso solar | tu primer modelo fotovoltaico: de la latitud a los kWh |
+| 2 | De la libreta a la app | la app interactiva: sliders, menús y modo webapp |
+| 3 | El recibo y el CO₂ | los 3 KPIs: kWh generados, $ ahorrados, kg de CO₂ evitados |
+
+::: {.idea-clave}
+Al final te llevas una **app web parametrizable**, exportable como HTML y defendible en tu portafolio, hecha 100 % en Python: ni una línea de HTML ni de JavaScript.
+:::
+
+::: {.small}
+📄 Para la sesión 3: **trae un recibo de CFE** (el tuyo o el de tu casa). Lo vamos a convertir en datos.
+:::
+
+## La ruta de hoy {.smaller}
+
+1. **molab y tu primera libreta** (10 min)
+2. **¿Por qué Python?** (10 min)
+3. **Python mínimo** y las reglas de marimo (20 min)
+4. **Geometría solar**: del cielo a tu techo (30 min)
+5. **Datos meteorológicos reales**: EPW y PVGIS (25 min)
+6. **Tu primer modelo fotovoltaico** (15 min)
+7. Reproducibilidad, reto y cierre (10 min)
+
+::: {.notes}
+Formato de todo el taller: lanzar la pregunta, esperar respuestas, avanzar para mostrar la nuestra.
+:::
+
+# ¿Por qué Python? {.titulo-seccion}
+
+## Un lenguaje general con un ecosistema científico
+
+::: {.fragment .fade-in-then-semi-out}
+**¿Qué tiene Python que no tengan Excel, MATLAB o R?**
+:::
+
+:::: {.columns}
+
+::: {.column width="50%"}
+::: {.incremental}
+- **Un solo lenguaje** para todo el flujo: adquisición, limpieza, modelado, visualización, reporte.
+- **Ecosistema maduro**: NumPy, pandas, Matplotlib, SciPy, scikit-learn, xarray.
+- **Dominio de energía**: `pvlib`, `windpowerlib`, `PyPSA`, `oemof`, `pandapower`.
+:::
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- **Código abierto**: sin licencias, auditable, citable.
+- **Comunidad enorme**: la duda que tienes ya alguien la resolvió.
+- **Puente** hacia HPC, la nube y el aprendizaje automático.
+:::
+:::
+
+::::
+
+::: {.fragment .idea-clave}
+Python no es la herramienta más rápida ni la más elegante: es la que **conecta** todo lo demás.
+:::
+
+## Ejemplo: la irradiancia de un día despejado, en 8 líneas {.smaller}
+
+::: {.fragment .fade-in-then-semi-out}
+**¿Cuántas líneas hacen falta para calcular y graficar la irradiancia de un día despejado en Temixco?**
+:::
+
+::: {.fragment}
+```{python}
+#| label: fig-clearsky
+#| fig-cap: "Irradiancia de cielo despejado (modelo Ineichen) en Temixco, Morelos."
+#| code-fold: true
+#| code-summary: "Ver código (pvlib + pandas + matplotlib)"
+import pandas as pd
+import matplotlib.pyplot as plt
+from pvlib.location import Location
+
+temixco = Location(latitude=18.84, longitude=-99.24,
+                   tz="America/Mexico_City", altitude=1220, name="Temixco")
+
+horas = pd.date_range("2026-03-21", "2026-03-22", freq="10min", tz=temixco.tz)
+cielo = temixco.get_clearsky(horas, model="ineichen", linke_turbidity=3.0)
+
+fig, ax = plt.subplots(figsize=(9, 3.8))
+cielo[["ghi", "dni", "dhi"]].plot(ax=ax, lw=2)
+ax.set_ylabel("Irradiancia (W/m²)")
+ax.set_xlabel("Hora local")
+ax.set_title("Equinoccio de primavera · cielo despejado")
+ax.legend(["GHI", "DNI", "DHI"], frameon=False)
+ax.grid(alpha=.3)
+plt.tight_layout()
+```
+:::
+
+## Lo que acabamos de ver {.smaller}
+
+::: {.incremental}
+- **8 líneas** de código: ubicación → posición solar → modelo de cielo despejado → gráfica.
+- Cada paso es una **biblioteca revisada por pares** (`pvlib` nació en Sandia National Labs).
+- El resultado es **reproducible**: cualquier persona con este archivo obtiene la misma figura.
+:::
+
+. . .
+
+::: {.callout-tip}
+## Pregunta para la audiencia
+¿Cuántas de sus hojas de cálculo podrían regenerarse hoy desde cero, sin intervención manual?
+:::
+
+# marimo y el Python mínimo {.titulo-seccion}
+
+## Jupyter vs marimo: el cuaderno reactivo {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Jupyter** (el cuaderno clásico)
+
+::: {.incremental}
+- Corres las celdas **a mano**, en el orden que quieras.
+- Estado oculto: ¿corriste la celda 5 antes que la 3? El cuaderno ya no dice la verdad.
+- El archivo `.ipynb` es JSON: difícil de leer y de versionar.
+:::
+:::
+
+::: {.column width="50%"}
+**marimo** (el cuaderno reactivo)
+
+::: {.incremental}
+- Cada celda es una función; el cuaderno es un **grafo de dependencias**.
+- Una variable se define en **una sola** celda.
+- Cambias algo → se recalcula **todo lo que depende de ello**. No hay estado oculto.
+- El archivo es **Python puro**: corre como script, se versiona en git.
+:::
+:::
+
+::::
+
+::: {.fragment .idea-clave}
+En la sesión 2 esto se vuelve superpoder: cada slider recalcula solo lo necesario, y la libreta **ya es** una app.
+:::
+
+## Python mínimo 1 · variables y tipos {.solo-codigo}
+
+```{python}
+potencia_panel = 550   # W, un panel típico
+eficiencia = 0.20      # fracción, sin unidades
+ciudad = "Temixco"
+type(potencia_panel), type(eficiencia), type(ciudad)
+```
+
+Una variable es un nombre pegado a un valor. El tipo (`int`, `float`, `str`) se lo da el valor, no tú. Los comentarios con `#` documentan **las unidades**: en energía, la mitad de los errores son de unidades.
+
+## Python mínimo 2 · listas {.solo-codigo}
+
+```{python}
+ciudades = ["Temixco", "Mérida", "Tijuana", "La Paz"]
+ciudades[0], ciudades[-1], len(ciudades)
+```
+
+Una lista es una colección ordenada. Se indexa desde **cero**, y `-1` es el último elemento. En la sesión 2, tu app recorrerá una lista de ciudades exactamente así.
+
+## Python mínimo 3 · diccionarios {.solo-codigo}
+
+```{python}
+sitio = {"nombre": "Temixco", "lat": 18.84,
+         "lon": -99.24, "altitud": 1220}
+sitio["lat"]
+```
+
+Un diccionario guarda pares **clave → valor**. Es la forma natural de describir *un* sitio; una tabla de pandas será la forma natural de describir *muchos*.
+
+## Python mínimo 4 · funciones {.solo-codigo}
+
+```{python}
+def kwh_mensuales(area_m2, hsp=5.5, eficiencia=0.20):
+    return area_m2 * hsp * eficiencia * 30
+
+f"{kwh_mensuales(10):.0f} kWh al mes con 10 m²"
+```
+
+Una función empaca un cálculo con nombre y valores por defecto. La regla de tres de los instaladores solares: área × *horas solares pico* × eficiencia × 30 días.
+
+::: {.small}
+Ese `hsp=5.5` es un **número mágico** por ahora. Al final de la sesión lo vamos a calcular de verdad, para tu techo y tu clima.
+:::
+
+# El código, celda por celda {.titulo-seccion}
+
+## Celda 1 · Las herramientas {.solo-codigo}
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from pvlib.location import Location
+```
+
+Importamos las bibliotecas: pandas para tablas con tiempo, numpy para matemáticas, matplotlib para gráficas y pvlib para la física solar.
+
+## Celda 2 · El lugar {.solo-codigo}
+
+```{python}
+temixco = Location(latitude=18.84, longitude=-99.24,
+                   tz="America/Mexico_City",
+                   altitude=1220, name="Temixco")
+```
+
+Creamos el sitio: dónde está Temixco (la casa del IER-UNAM), en qué zona horaria y a qué altura.
+
+## Celda 3 · El cuándo {.solo-codigo}
+
+```{python}
+horas = pd.date_range("2026-03-21", "2026-03-22",
+                      freq="10min", tz=temixco.tz)
+```
+
+Creamos el reloj: un instante cada 10 minutos durante el 21 de marzo, en hora local de Temixco.
+
+## Celda 4 · El cielo despejado {.solo-codigo}
+
+```{python}
+cielo = temixco.get_clearsky(horas, model="ineichen",
+                             linke_turbidity=3.0)
+```
+
+Calculamos la irradiancia de un día sin nubes: una tabla con GHI, DNI y DHI para cada instante.
+
+## Celda 5 · La gráfica {.solo-codigo}
+
+```{python}
+fig, ax = plt.subplots(figsize=(9, 2.6))
+cielo[["ghi", "dni", "dhi"]].plot(ax=ax, lw=2)
+ax.set_ylabel("Irradiancia (W/m²)")
+ax.set_xlabel("Hora local")
+ax.legend(["GHI", "DNI", "DHI"], frameon=False)
+ax.grid(alpha=.3)
+plt.tight_layout()
+```
+
+## La tabla `cielo`: un renglón por instante, tres columnas {.solo-codigo}
+
+```{python}
+dia = cielo.loc["2026-03-21 06:00":"2026-03-21 18:00"]
+dia.iloc[::18].round(0)     # un renglón cada 3 horas
+```
+
+El índice es la hora local. Cada columna es una irradiancia en W/m².
+
+## Columna `ghi` · global horizontal {.solo-codigo}
+
+```{python}
+ax = cielo["ghi"].plot(figsize=(9, 2.6), lw=2)
+ax.set_ylabel("GHI (W/m²)"); ax.set_ylim(0, 1100)
+```
+
+Todo lo que cae sobre un metro cuadrado de piso horizontal.
+
+## Columna `dni` · directa normal {.solo-codigo}
+
+```{python}
+ax = cielo["dni"].plot(figsize=(9, 2.6), lw=2)
+ax.set_ylabel("DNI (W/m²)"); ax.set_ylim(0, 1100)
+```
+
+Lo que llega en línea recta desde el disco solar, medido de frente al Sol.
+
+## Columna `dhi` · difusa horizontal {.solo-codigo}
+
+```{python}
+ax = cielo["dhi"].plot(figsize=(9, 2.6), lw=2)
+ax.set_ylabel("DHI (W/m²)"); ax.set_ylim(0, 1100)
+```
+
+Lo que llega del resto del cielo, sin el disco solar: la luz que hay en la sombra.
+
+# Radiación sobre una superficie inclinada {.titulo-seccion}
+
+## La ecuación: de la tabla `cielo` a una superficie
+
+$$
+G_{\text{sup}} =
+\underbrace{\text{DNI}\cdot\cos\theta}_{\text{1 · directa}}
+\;+\;
+\underbrace{\text{DHI}\cdot\frac{1+\cos\beta}{2}}_{\text{2 · difusa del cielo}}
+\;+\;
+\underbrace{\text{GHI}\cdot\rho\cdot\frac{1-\cos\beta}{2}}_{\text{3 · reflejada por el suelo}}
+$$
+
+Tres caminos, y cada uno usa una columna distinta de la tabla. Solo aparecen tres datos nuevos:
+
+- $\beta$: **inclinación** de la superficie. 0° = horizontal, 90° = pared.
+- $\theta$: **ángulo de incidencia**, entre el haz solar y la normal a la superficie.
+- $\rho$: **albedo**, la fracción de la luz que el suelo rebota.
+
+## Término 1 · Directa: $\text{DNI}\cdot\cos\theta$ {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{python}
+#| echo: false
+#| fig-cap: "Vista lateral: superficie inclinada β, su normal y el haz solar."
+from matplotlib.patches import Arc, Circle, FancyArrowPatch
+AZUL, AMBAR, GRIS = "#0b2545", "#f4a300", "#5c677d"
+beta, zen = 50, 12
+b, z = np.radians(beta), np.radians(zen)
+fig, ax = plt.subplots(figsize=(5.4, 3.6))
+ax.set_aspect("equal"); ax.axis("off"); ax.set_xlim(-1.35, 1.35); ax.set_ylim(-0.25, 1.32)
+ax.plot([-1.3, 1.3], [0, 0], color="#8a6d3b", lw=1.5)                              # suelo
+p0 = np.array([0.15, 0.0]); p1 = p0 + 1.1 * np.array([-np.cos(b), np.sin(b)])       # superficie
+ax.plot([p0[0], p1[0]], [p0[1], p1[1]], color=AZUL, lw=6, solid_capstyle="butt")
+m = (p0 + p1) / 2; n = np.array([np.sin(b), np.cos(b)]); s = np.array([np.sin(z), np.cos(z)])
+flecha = lambda a, c, col, lw: ax.add_patch(FancyArrowPatch(a, c, arrowstyle="-|>", mutation_scale=11, color=col, lw=lw))
+flecha(m, m + 0.6 * n, AZUL, 1.5); ax.text(*(m + 0.64 * n + [0.03, -0.06]), "normal", color=AZUL, fontsize=9)
+flecha(s - 0.1 * s, m + 0.03 * s, AMBAR, 2.2); ax.add_patch(Circle(s, 0.09, color=AMBAR))
+ax.text(*(m + 0.5 * s + [-0.08, 0]), "haz solar\n(DNI)", color=AMBAR, fontsize=9, ha="right")
+ax.plot([m[0], m[0]], [m[1], m[1] + 0.95], ls="--", color=GRIS, lw=1); ax.text(m[0] - 0.03, m[1] + 0.97, "cenit", color=GRIS, fontsize=8, ha="right")
+ax.plot([p0[0], p0[0] - 0.75], [0, 0], ls="--", color=GRIS, lw=1)
+ax.add_patch(Arc(p0, 0.7, 0.7, theta1=180 - beta, theta2=180, color=AZUL, lw=1.6)); ax.text(p0[0] - 0.5, 0.1, r"$\beta$", color=AZUL, fontsize=13)
+ax.add_patch(Arc(m, 1.3, 1.3, theta1=90 - zen, theta2=90, color=GRIS, lw=1.2)); ax.text(m[0] + 0.06, m[1] + 0.68, r"$\theta_z$", color=GRIS, fontsize=12)
+ax.add_patch(Arc(m, 0.75, 0.75, theta1=90 - beta, theta2=90 - zen, color=AMBAR, lw=1.8)); ax.text(m[0] + 0.3, m[1] + 0.3, r"$\theta$", color=AMBAR, fontsize=13)
+ax.text(p1[0] - 0.05, p1[1] + 0.05, "superficie", color=AZUL, fontsize=9, ha="right")
+plt.tight_layout()
+```
+:::
+
+::: {.column width="50%"}
+- $\theta$ es el ángulo entre el **haz solar** y la **normal** a la superficie.
+- Si el Sol está de frente, $\theta = 0$, $\cos\theta = 1$ y llega **toda** la DNI.
+- Si el Sol está de lado, la misma luz se reparte sobre más área: $\cos\theta$ la reduce.
+- Si el Sol está **detrás**, $\cos\theta < 0$ y se toma 0: no hay directa.
+- $\theta$ sale de la superficie ($\beta$, $\gamma$) y de dónde está el Sol ($\theta_z$, $\gamma_s$):
+  $$\cos\theta = \cos\beta\cos\theta_z + \sin\beta\sin\theta_z\cos(\gamma_s - \gamma)$$
+- Para el piso horizontal, $\beta = 0$ y $\theta = \theta_z$: lo que ya usa la GHI.
+:::
+
+::::
+
+## Término 2 · Difusa del cielo: $\text{DHI}\cdot\dfrac{1+\cos\beta}{2}$ {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+- La DHI es lo que llega de **toda la bóveda celeste** a un piso horizontal, que la ve completa.
+- Una superficie inclinada ve **solo una parte** de la bóveda. El factor $\frac{1+\cos\beta}{2}$ es esa fracción.
+- Suponemos que el cielo brilla **parejo** en todas direcciones (modelo isotrópico). No es exacto, pero es simple y conservador.
+- No depende de dónde está el Sol: solo de $\beta$.
+:::
+
+::: {.column width="45%"}
+| Superficie | $\beta$ | Fracción de la bóveda |
+|---|---|---|
+| horizontal | 0° | 1: toda |
+| inclinada | 30° | 0.93 |
+| pared | 90° | ½ |
+| boca abajo | 180° | 0: nada |
+:::
+
+::::
+
+## Término 3 · Reflejada por el suelo: $\text{GHI}\cdot\rho\cdot\dfrac{1-\cos\beta}{2}$ {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+- **GHI**: lo que cae al suelo (por eso usa la columna global horizontal).
+- $\rho$, **albedo**: la fracción que el suelo rebota, entre 0 (negro) y 1 (blanco).
+- $\frac{1-\cos\beta}{2}$: la **fracción del suelo** que la superficie ve. Es la que le falta del cielo: los dos factores suman 1.
+- Un piso horizontal no ve el suelo: 0. Una pared ve la mitad: $\rho\cdot\text{GHI}/2$.
+- El albedo es una **suposición**: hay que anotarla y probar cuánto pesa.
+:::
+
+::: {.column width="45%"}
+| Suelo | $\rho$ típico |
+|---|---|
+| asfalto | 0.10 |
+| pasto | 0.20 |
+| concreto | 0.30 |
+| arena | 0.40 |
+| techo blanco | 0.70 |
+| nieve fresca | 0.85 |
+:::
+
+::::
+
+## Celda 6 · La posición del Sol {.solo-codigo}
+
+```{python}
+sol = temixco.get_solarposition(horas)
+angulos = sol[["apparent_zenith", "azimuth"]]
+angulos.loc[dia.index[::18]].round(1)
+```
+
+Para cada instante, dónde está el Sol: el ángulo cenital, desde la vertical, y el azimut, con 0° = N, 90° = E, 180° = S. La tabla `sol` trae más columnas; estas dos son las que usa la ecuación.
+
+## Cómo se usan los dos ángulos
+
+```{python}
+#| echo: false
+#| fig-cap: "Izquierda: vista de lado. Derecha: vista desde arriba, con la trayectoria del Sol del 21 de marzo y la pared al este."
+AZUL, AMBAR, GRIS = "#0b2545", "#f4a300", "#5c677d"
+fig = plt.figure(figsize=(10, 4.8))
+# Vista de lado: ángulo cenital
+ax = fig.add_subplot(1, 2, 1)
+
+ax.set_aspect("equal"); ax.axis("off"); ax.set_xlim(-1.2, 1.2); ax.set_ylim(-0.15, 1.25)
+ax.set_title("Ángulo cenital $\\theta_z$: desde la vertical", color=AZUL, fontsize=11, fontweight="bold")
+ax.plot([-1.1, 1.1], [0, 0], color="#8a6d3b", lw=1.5)
+t = np.linspace(0, np.pi, 100); ax.plot(np.cos(t), np.sin(t), ls=":", color=GRIS, lw=1)
+ax.plot([0, 0], [0, 1.1], ls="--", color=GRIS, lw=1); ax.text(0.03, 1.12, "cenit", color=GRIS, fontsize=8)
+for hora, col in [("09:00", "#f4a300"), ("12:00", "#c77d00")]:
+    z = np.radians(angulos.loc[f"2026-03-21 {hora}", "apparent_zenith"])
+    s = np.array([np.sin(z), np.cos(z)])
+    ax.add_patch(FancyArrowPatch(s * 0.92, [0, 0.02], arrowstyle="-|>", mutation_scale=11, color=col, lw=2))
+    ax.add_patch(Circle(s, 0.07, color=col))
+    ax.text(*(s + [0.1, 0.02]), hora, color=col, fontsize=9)
+z12 = angulos.loc["2026-03-21 12:00", "apparent_zenith"]
+ax.add_patch(Arc([0, 0], 0.9, 0.9, theta1=90 - z12, theta2=90, color=AZUL, lw=1.5))
+ax.text(0.1, 0.5, f"$\\theta_z$ = {z12:.0f}°", color=AZUL, fontsize=10)
+ax.plot([0], [0], "ko", ms=5); ax.text(0, -0.1, "la pared", ha="center", fontsize=8, color=GRIS)
+# Vista desde arriba: azimut
+ax = fig.add_subplot(1, 2, 2, projection="polar")
+ax.set_theta_zero_location("N"); ax.set_theta_direction(-1)
+ax.set_title("Azimut $\\gamma_s$: desde el norte, en sentido horario", color=AZUL, fontsize=11, fontweight="bold", pad=18)
+de_dia = angulos[angulos["apparent_zenith"] < 90]
+ax.plot(np.radians(de_dia["azimuth"]), de_dia["apparent_zenith"], color=AMBAR, lw=2.5)
+ax.fill_between(np.linspace(0, np.pi, 50), 0, 90, color=AZUL, alpha=0.07)
+ax.plot([0, 0], [0, 90], color=AZUL, lw=4); ax.plot([np.pi, np.pi], [0, 90], color=AZUL, lw=4)   # la pared, de N a S
+ax.annotate("", xy=(np.pi / 2, 45), xytext=(np.pi / 2, 5), arrowprops=dict(arrowstyle="-|>", color=AZUL, lw=1.5))
+ax.text(np.radians(52), 58, "la pared\nmira al este\n(γ = 90°)", color=AZUL, fontsize=8, ha="center", va="center")
+for hora in ["09:00", "12:00", "15:00", "18:00"]:
+    z, az = angulos.loc[f"2026-03-21 {hora}"]
+    ax.plot(np.radians(az), z, "o", color="#c77d00", ms=6)
+    ax.text(np.radians(az), z + 16 if z < 70 else z - 16, f"{hora}\n{az:.0f}°", ha="center", va="center", fontsize=8, color="#c77d00")
+ax.set_rlim(0, 90); ax.set_rticks([30, 60, 90]); ax.set_rlabel_position(225)
+ax.tick_params(axis="y", labelsize=7, colors=GRIS)
+ax.set_xticks(np.radians([0, 90, 180, 270])); ax.set_xticklabels(["N · 0°", "E · 90°", "S · 180°", "O · 270°"], fontsize=9)
+ax.grid(alpha=.3)
+fig.subplots_adjust(left=0.01, right=0.97, top=0.88, bottom=0.09, wspace=0.05)
+```
+
+$\theta_z$ se mide desde la vertical. $\gamma_s$ se mide sobre el suelo, desde el norte y en sentido horario. La pared al este solo tiene al Sol de frente mientras $\gamma_s$ está entre 0° y 180°: por la mañana.
+
+## Celda 7 · La ecuación en pvlib {.solo-codigo}
+
+```{python}
+from pvlib import irradiance
+pared = irradiance.get_total_irradiance(
+    surface_tilt=90, surface_azimuth=90,
+    solar_zenith=sol["apparent_zenith"],
+    solar_azimuth=sol["azimuth"],
+    dni=cielo["dni"], dhi=cielo["dhi"],
+    ghi=cielo["ghi"], albedo=0.20,
+    model="isotropic")
+```
+
+Una pared vertical (β = 90°) que mira al este (γ = 90°) con pasto enfrente (ρ = 0.20).
+
+## La tabla `pared`: los tres términos y su suma {.solo-codigo}
+
+```{python}
+pared.loc[dia.index[::18]].round(0)
+```
+
+`poa_direct`, `poa_sky_diffuse` y `poa_ground_diffuse` son los términos 1, 2 y 3. `poa_diffuse` suma los dos últimos y `poa_global` es el total: lo que recibe la pared.
+
+# De la potencia a la energía {.titulo-seccion}
+
+## Energía: el área bajo la curva
+
+```{python}
+#| echo: false
+#| fig-cap: "Irradiancia total sobre la pared al este durante el día. El área sombreada es la energía."
+fig, ax = plt.subplots(figsize=(9, 3.2))
+pared["poa_global"].plot(ax=ax, lw=2.5, color="#0b2545")
+ax.fill_between(pared.index, 0, pared["poa_global"], color="#f4a300", alpha=0.35)
+ax.set_ylabel("poa_global (W/m²)"); ax.set_xlabel("Hora local"); ax.grid(alpha=.3)
+ax.text(pared["poa_global"].idxmax(), 180, "energía del día\n= área", ha="center", fontsize=11, color="#0b2545")
+plt.tight_layout()
+```
+
+- `poa_global` es **potencia** por metro cuadrado en cada instante: W/m². Como la velocidad de un coche.
+- La **energía** del día es lo acumulado: el **área bajo la curva**. Como la distancia recorrida.
+- Con renglones cada 10 minutos, el área es la suma de renglones × 10/60 h. Entre 1000 para pasar de Wh a kWh.
+
+## Celda 8 · La energía del día {.solo-codigo}
+
+```{python}
+dt_h = 10 / 60                        # horas por renglón
+energia = pared["poa_global"].sum() * dt_h / 1000
+print(f"{energia:.2f} kWh/m² en el día")
+```
+
+Sumamos todos los renglones de `poa_global` y multiplicamos por la duración de cada uno. Es el área bajo la curva, en kWh por metro cuadrado de pared.
+
+## Celda 9 · Cuatro paredes {.solo-codigo}
+
+```{python}
+orientaciones = {"Norte": 0, "Este": 90,
+                 "Sur": 180, "Oeste": 270}
+paredes = {}
+for nombre, azimut in orientaciones.items():
+    poa = irradiance.get_total_irradiance(
+        surface_tilt=90, surface_azimuth=azimut,
+        solar_zenith=sol["apparent_zenith"],
+        solar_azimuth=sol["azimuth"],
+        dni=cielo["dni"], dhi=cielo["dhi"],
+        ghi=cielo["ghi"], albedo=0.20)
+    paredes[nombre] = poa["poa_global"]
+paredes = pd.DataFrame(paredes)
+```
+
+Un ciclo: la celda 7 cuatro veces, cambiando solo el azimut. Guardamos `poa_global` de cada pared en una tabla.
+
+## Celda 10 · La energía de cada pared {.solo-codigo}
+
+```{python}
+energias = paredes.sum() * dt_h / 1000
+energias.round(2)
+```
+
+kWh/m² en el día para cada orientación, con el mismo cálculo de la celda 8 aplicado a las cuatro columnas a la vez. **¿Sorpresa?** En Temixco, la pared sur *no* gana.
+
+```{python}
+#| include: false
+colores = {"Norte": "C0", "Este": "C1", "Sur": "C2", "Oeste": "C3"}
+
+def resaltar(nombre):
+    """Las cuatro paredes en gris, la elegida a color con su área y su barra."""
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 3.4), width_ratios=[2, 1])
+    for otra in paredes.columns:
+        paredes[otra].plot(ax=ax1, lw=1, color="lightgray", label="_")
+    paredes[nombre].plot(ax=ax1, lw=2.5, color=colores[nombre], label=f"Pared al {nombre.lower()}")
+    ax1.fill_between(paredes.index, 0, paredes[nombre], color=colores[nombre], alpha=0.3)
+    ax1.set_ylabel("poa_global (W/m²)"); ax1.set_xlabel("Hora local"); ax1.grid(alpha=.3)
+    ax1.set_ylim(0, 850); ax1.legend(frameon=False, fontsize=10, loc="upper right")
+    energias.plot.barh(ax=ax2, color=[colores[n] if n == nombre else "lightgray" for n in energias.index])
+    for i, (n, v) in enumerate(energias.items()):
+        propio = n == nombre
+        ax2.text(v + 0.05, i, f"{v:.2f}", va="center", fontsize=12 if propio else 9,
+                 fontweight="bold" if propio else "normal", color="#0b2545" if propio else "gray")
+    ax2.set_xlabel("kWh/m²/día"); ax2.set_xlim(0, energias.max() * 1.3); ax2.grid(alpha=.3, axis="x")
+    plt.tight_layout()
+    return fig
+```
+
+## Pared al este
+
+```{python}
+#| echo: false
+resaltar("Este");
+```
+
+Pico en la mañana, cuando el Sol está de frente. Después del mediodía solo recibe difusa y reflejada. Área bajo la curva: **`{python} f"{energias['Este']:.2f}"` kWh/m²**.
+
+## Pared al sur
+
+```{python}
+#| echo: false
+resaltar("Sur");
+```
+
+Ve al Sol todo el día… pero en Temixco el Sol del equinoccio pasa **casi por el cenit** (θ~z~ ≈ 19° al mediodía): una pared vertical lo ve siempre de reojo. Junta **`{python} f"{energias['Sur']:.2f}"` kWh/m²**, menos que este u oeste. En el trópico, **las paredes son malos colectores**.
+
+## El techo le gana a cualquier pared {.solo-codigo}
+
+```{python}
+techo20 = irradiance.get_total_irradiance(
+    surface_tilt=20, surface_azimuth=180,
+    solar_zenith=sol["apparent_zenith"],
+    solar_azimuth=sol["azimuth"],
+    dni=cielo["dni"], dhi=cielo["dhi"],
+    ghi=cielo["ghi"], albedo=0.20)
+e_techo = techo20["poa_global"].sum() * dt_h / 1000
+print(f"Techo a 20° al sur: {e_techo:.2f} kWh/m² en el día")
+```
+
+Si el Sol va alto, hay que **acostarse para verlo de frente**: un techo a 20° junta **`{python} f"{e_techo / energias.max():.1f}"`×** lo de la mejor pared. Por eso los paneles se montan casi horizontales en México, y por eso tu techo es la mina.
+
+## Trayectoria aparente del Sol: el mapa completo
+
+```{python}
+#| echo: false
+#| fig-cap: "Vista desde arriba. Azimut desde el norte en sentido horario; el centro es el cenit y el borde el horizonte. Trayectoria del 21 de marzo (línea gruesa) y de los solsticios (punteadas)."
+fig = plt.figure(figsize=(10, 4.6))
+ax = fig.add_subplot(1, 1, 1, projection="polar")
+ax.set_theta_zero_location("N"); ax.set_theta_direction(-1)
+ax.fill_between(np.linspace(np.pi / 2, 3 * np.pi / 2, 60), 0, 90, color=colores["Sur"], alpha=0.10)
+ax.fill_between(np.linspace(-np.pi / 2, np.pi / 2, 60), 0, 90, color=colores["Norte"], alpha=0.10)
+ax.plot([np.pi / 2, np.pi / 2], [0, 90], color="#0b2545", lw=4)
+ax.plot([3 * np.pi / 2, 3 * np.pi / 2], [0, 90], color="#0b2545", lw=4)   # la pared, de E a O
+ax.text(np.radians(180), 60, "lo que ve\nla pared sur", ha="center", va="center", fontsize=10, color=colores["Sur"], fontweight="bold")
+ax.text(np.radians(0), 60, "lo que ve\nla pared norte", ha="center", va="center", fontsize=10, color=colores["Norte"], fontweight="bold")
+trayectorias = {"21 mar": ("2026-03-21", "-", 3.0), "21 jun": ("2026-06-21", ":", 1.5), "21 dic": ("2026-12-21", ":", 1.5)}
+for etiqueta, (fecha, estilo, grosor) in trayectorias.items():
+    t = pd.date_range(fecha, periods=144, freq="10min", tz=temixco.tz)
+    pos = temixco.get_solarposition(t)
+    pos = pos[pos["apparent_zenith"] < 90]
+    ax.plot(np.radians(pos["azimuth"]), pos["apparent_zenith"], estilo, lw=grosor, color="#f4a300")
+    fin = pos.iloc[-1]
+    ax.text(np.radians(fin["azimuth"]) + 0.12, 78, etiqueta, fontsize=8, color="#c77d00", ha="left", va="center")
+ax.set_rlim(0, 90); ax.set_rticks([30, 60, 90]); ax.set_rlabel_position(225)
+ax.tick_params(axis="y", labelsize=7, colors="#5c677d")
+ax.set_xticks(np.radians([0, 90, 180, 270])); ax.set_xticklabels(["N · 0°", "E · 90°", "S · 180°", "O · 270°"], fontsize=10)
+ax.grid(alpha=.3); fig.subplots_adjust(left=0.05, right=0.95, top=0.92, bottom=0.06)
+```
+
+El 21 de marzo el Sol pasa rozando el cenit: por eso ninguna pared lo ve bien y el techo gana. En junio, Temixco está **al sur del Sol**: la trayectoria cruza al lado norte y la pared norte sí recibe directa. En diciembre todo se recorre al sur.
+
+# Datos meteorológicos reales {.titulo-seccion}
+
+## El cielo despejado es una ficción útil {.smaller}
+
+::: {.incremental}
+- El modelo Ineichen responde "¿cuánto llegaría **sin nubes**?". Perfecto para entender la geometría; malo para dimensionar un sistema: **sobreestima**.
+- Lo que necesitamos: un año de datos **medidos** (estación o satélite), hora por hora.
+- **TMY** (*typical meteorological year*): 8760 horas armadas mes a mes con los meses más "típicos" de ~15–20 años de datos. No es un año que ocurrió: es el año **estadísticamente representativo**.
+:::
+
+. . .
+
+::: {.idea-clave}
+Dos maneras de conseguir un TMY: un archivo **EPW** (el formato estándar de la simulación de edificios) o pedírselo a **PVGIS** desde Python, para cualquier punto del mapa.
+:::
+
+## Celda 11 · Leer un archivo EPW {.solo-codigo}
+
+```{python}
+from pvlib import iotools
+epw, meta_epw = iotools.read_epw("data/epw/temixco.epw",
+                                 coerce_year=2026)
+epw[["ghi", "dni", "dhi", "temp_air"]].head(3)
+```
+
+Un EPW es texto plano: 8 renglones de encabezado y 8760 de datos. `read_epw` lo convierte en la misma tabla que ya conocemos —GHI, DNI, DHI— más temperatura y viento. `coerce_year` pone todas las horas en el mismo año.
+
+## El año completo, de un vistazo
+
+```{python}
+#| code-fold: true
+#| code-summary: "Ver código"
+#| fig-cap: "GHI diaria en Temixco durante el año meteorológico típico (EPW)."
+diaria = epw["ghi"].resample("D").sum() / 1000
+fig, ax = plt.subplots(figsize=(9, 3))
+ax.plot(diaria.index, diaria.values, lw=0.8, color="#5c677d")
+ax.plot(diaria.rolling(30, center=True).mean(), lw=2.5, color="#f4a300")
+ax.set_ylabel("kWh/m² al día"); ax.grid(alpha=.3)
+plt.tight_layout()
+```
+
+La línea gris es cada día; la ámbar, el promedio móvil de 30 días. Ahí está la temporada de lluvias — y ningún día real es la curva perfecta del cielo despejado.
+
+## Celda 12 · Cualquier localidad, una línea: PVGIS {.solo-codigo}
+
+```{python}
+tmy, meta = iotools.get_pvgis_tmy(18.84, -99.24,
+                                  map_variables=True,
+                                  roll_utc_offset=-6,
+                                  coerce_year=2026)
+tmy[["ghi", "dni", "dhi", "temp_air"]].head(3)
+```
+
+PVGIS (Comisión Europea) entrega el TMY de **cualquier punto de América**, derivado de satélite, sin registrarse. Ojo: lo entrega en **UTC**; `roll_utc_offset=-6` lo recorre a hora local. Si lo olvidas, tu sol sale a medianoche.
+
+## Las nubes, mes a mes
+
+```{python}
+#| code-fold: true
+#| code-summary: "Ver código"
+#| fig-cap: "GHI mensual en Temixco: cielo despejado vs año meteorológico típico."
+cielo_anio = temixco.get_clearsky(tmy.index, model="ineichen",
+                                  linke_turbidity=3.0)
+mensual = pd.DataFrame({
+    "cielo despejado": cielo_anio["ghi"].groupby(cielo_anio.index.month).sum() / 1000,
+    "año típico (PVGIS)": tmy["ghi"].groupby(tmy.index.month).sum() / 1000,
+})
+ax = mensual.plot.bar(figsize=(9, 3.2), color=["#5c677d", "#f4a300"], width=0.75)
+ax.set_xticklabels(list("EFMAMJJASOND"), rotation=0)
+ax.set_ylabel("kWh/m² al mes"); ax.grid(alpha=.3, axis="y")
+ax.legend(frameon=False)
+plt.tight_layout()
+```
+
+```{python}
+#| echo: false
+perdida = 1 - tmy["ghi"].sum() / cielo_anio["ghi"].sum()
+```
+
+Las nubes le cuestan a Temixco **`{python} f"{perdida:.0%}"`** del recurso anual — y casi todo se concentra en la temporada de lluvias.
+
+# Tu primer modelo fotovoltaico {.titulo-seccion}
+
+## Celda 13 · El techo, hora por hora, todo el año {.solo-codigo}
+
+```{python}
+sol_tmy = temixco.get_solarposition(tmy.index)
+techo = irradiance.get_total_irradiance(
+    surface_tilt=20, surface_azimuth=180,
+    solar_zenith=sol_tmy["apparent_zenith"],
+    solar_azimuth=sol_tmy["azimuth"],
+    dni=tmy["dni"], ghi=tmy["ghi"], dhi=tmy["dhi"],
+    albedo=0.20, model="isotropic")
+```
+
+La misma ecuación de los tres caminos, pero con el **año típico** en lugar del cielo despejado: un techo a 20° mirando al sur, 8760 renglones.
+
+## Celda 14 · Del sol a los kWh del sistema {.solo-codigo}
+
+```{python}
+area = 10          # m² de paneles
+eficiencia = 0.20  # 20 %
+kwh_anio = techo["poa_global"].sum() / 1000 * area * eficiencia
+print(f"{kwh_anio:,.0f} kWh al año con {area} m²")
+```
+
+Cada renglón del TMY dura 1 hora, así que la suma ya integra. Entre 1000 → kWh/m²; por área y eficiencia → la energía del **sistema**. Modelo mínimo: sin temperatura ni pérdidas — eso se refina después.
+
+## El número mágico, revelado {.solo-codigo}
+
+```{python}
+hsp = techo["poa_global"].sum() / 1000 / 365
+print(f"{hsp:.2f} horas solares pico promedio en Temixco")
+print(f"{kwh_mensuales(10, hsp=hsp):,.0f} kWh/mes con nuestra función")
+print(f"{kwh_anio / 12:,.0f} kWh/mes con el año típico completo")
+```
+
+La **hora solar pico** son los kWh/m²-día que recibe el plano del arreglo. El `hsp=5.5` del inicio era esto. Ya no es un número mágico: **sale de tu techo y de tu clima**.
+
+## La cosecha, mes a mes
+
+```{python}
+#| code-fold: true
+#| code-summary: "Ver código"
+#| fig-cap: "Energía mensual del sistema de 10 m² en Temixco (año típico)."
+kwh_mes = techo["poa_global"].groupby(techo.index.month).sum() / 1000 * area * eficiencia
+fig, ax = plt.subplots(figsize=(9, 3.2))
+ax.bar(kwh_mes.index, kwh_mes.values, color="#f4a300")
+ax.set_xticks(range(1, 13)); ax.set_xticklabels(list("EFMAMJJASOND"))
+ax.set_ylabel("kWh del sistema"); ax.grid(alpha=.3, axis="y")
+plt.tight_layout()
+```
+
+¿Por qué el pico está en primavera y no en verano? (Pista: ya viste la gráfica de las nubes.) En la sesión 3, esta curva se cruza contra tu **recibo de CFE**.
+
+# Cierre {.titulo-seccion}
+
+## Reproducible desde la primera línea {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+- Todo el taller vive en un repositorio: diapositivas, libretas y datos.
+- Cada libreta declara sus dependencias en su encabezado; con [uv](https://docs.astral.sh/uv/) corre igual en molab o en tu máquina:
+
+```python
+# /// script
+# requires-python = ">=3.12"
+# dependencies = ["marimo", "pandas",
+#                 "pvlib", "matplotlib"]
+# ///
+```
+
+```bash
+uv run marimo edit notebooks/s1_fundamentos.py
+```
+:::
+
+::: {.column width="45%"}
+- La libreta de marimo **es** un archivo `.py`: se lee, se versiona, se comparte.
+- En molab no instalaste nada; en tu máquina tampoco hace falta más que uv.
+- La narrativa computacional: texto, código y resultados **en el mismo documento**, regenerable desde cero.
+:::
+
+::::
+
+## Reto para casa {.smaller}
+
+1. **Tu ciudad**: saca su latitud y longitud de Google Maps (clic derecho → copiar coordenadas), pídele el TMY a PVGIS y calcula sus horas solares pico. ¿Le gana a Temixco?
+2. **Tu techo real**: cambia `surface_tilt` y `surface_azimuth` a los de tu casa. ¿Cuánto pierdes respecto a 20° al sur?
+3. 📄 **Consigue un recibo de CFE** para la sesión 3.
+
+. . .
+
+::: {.idea-clave}
+**Próxima sesión**: la libreta se convierte en app — sliders, menús, un catálogo de 18 ciudades y modo webapp sin código visible.
+:::
+
+::: {.small}
+Material del taller: diapositivas, libretas y datos en el repositorio · [molab.marimo.io](https://molab.marimo.io)
+:::
