@@ -1,9 +1,12 @@
 project:
-  type: default
+  type: website
   output-dir: _site
   render:
     - index.qmd
     - sesion1.qmd
+
+website:
+  title: "Mi techo, mis kWh, mi CO₂"
 
 lang: es
 
