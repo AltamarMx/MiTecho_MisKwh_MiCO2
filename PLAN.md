@@ -57,9 +57,11 @@ apuntaba ahí: es el "reto" al final de `app_sitios.py`.)
   con la `zona_horaria` del catálogo. Imprescindible para cruzar con demanda, tarifa
   y factor de emisión horarios en la sesión 3.
 - **Plan B sin red**: `scripts/precargar_tmy.py` guarda en `data/tmy/` el TMY de las
-  18 ciudades (parquet). Las libretas intentan la caché local primero (molab monta el
-  repo) y solo llaman a PVGIS para sitios fuera del catálogo — el WiFi del aula deja
-  de ser punto único de falla.
+  ciudades del catálogo (CSV, hora local fija, año 2026). Las libretas intentan PVGIS
+  en vivo y caen solas a la caché — imprescindible porque la versión **WASM** (la
+  libreta corriendo en el navegador, sin sesión) no puede llamar a PVGIS: el
+  navegador bloquea la petición por CORS. En las diapositivas, PVGIS en vivo es la
+  vía principal y la caché aparece como opción de respaldo.
 
 ### 1.4 Datos de CENACE precalculados, no descargas en vivo
 

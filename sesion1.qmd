@@ -34,12 +34,12 @@ Hoy trabajamos en **molab**: marimo en la nube, **sin instalar nada**. Solo nece
 
 [**Abrir la libreta en molab**](https://molab.marimo.io/github/AltamarMx/MiTecho_MisKwh_MiCO2/blob/main/notebooks/s1_fundamentos.py){.btn-molab}
 
-1. Entra a [molab.marimo.io](https://molab.marimo.io) con tu cuenta.
-2. Abre el enlace o escanea el código.
+1. **Inicia sesión** en [molab.marimo.io](https://molab.marimo.io) (GitHub o Google).
+2. Abre el enlace o escanea el código y **crea tu copia** para ejecutar en la nube.
 3. molab monta el **repositorio completo**: la libreta, los datos, todo.
 
 ::: {.small}
-La libreta es un archivo de Python puro (`notebooks/s1_fundamentos.py`) dentro del repositorio del taller.
+La libreta es un archivo de Python puro (`notebooks/s1_fundamentos.py`) dentro del repositorio del taller. Sin sesión corre en tu navegador en modo demo: funciona, pero sin salida a internet (usa los datos del repo).
 :::
 :::
 
@@ -724,6 +724,10 @@ tmy[["ghi", "dni", "dhi", "temp_air"]].head(3)
 ```
 
 PVGIS (Comisión Europea) entrega el TMY de **cualquier punto de América**, derivado de satélite, sin registrarse. Ojo: lo entrega en **UTC**; `roll_utc_offset=-6` lo recorre a hora local. Si lo olvidas, tu sol sale a medianoche.
+
+::: {.small}
+Opción sin red (o en la versión de navegador, donde PVGIS está bloqueado): la libreta cae sola a la caché del repo, `data/tmy/temixco.csv`, generada con `scripts/precargar_tmy.py`. Mismo año típico.
+:::
 
 ## Las nubes, mes a mes
 

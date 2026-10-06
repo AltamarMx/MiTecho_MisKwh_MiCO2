@@ -19,10 +19,11 @@ def _():
     import marimo as mo
     import pandas as pd
     import matplotlib.pyplot as plt
+    from pathlib import Path
     from pvlib import iotools, irradiance
     from pvlib.location import Location
 
-    return Location, iotools, irradiance, mo, pd, plt
+    return Location, Path, iotools, irradiance, mo, pd, plt
 
 
 @app.cell
@@ -49,9 +50,7 @@ def _(Location):
 
 
 @app.cell
-def _(iotools):
-    from pathlib import Path
-
+def _(Path, iotools):
     _candidatas = [Path("data/epw/temixco.epw"), Path("../data/epw/temixco.epw")]
     URL_EPW = ("https://raw.githubusercontent.com/AltamarMx/"
                "MiTecho_MisKwh_MiCO2/main/data/epw/temixco.epw")
@@ -99,18 +98,40 @@ def _(mo):
 
     **Prueba tu ciudad**: clic derecho en Google Maps → copiar coordenadas →
     pégalas aquí. (Tijuana es UTC−8; Hermosillo y La Paz, UTC−7.)
+
+    ⚠️ La llamada en vivo necesita la **nube de molab** (inicia sesión y crea tu
+    copia) o tu máquina. Si la libreta corre en el navegador (versión WASM), el
+    navegador bloquea a PVGIS (CORS) y la celda cae sola a la **caché del
+    repositorio**.
     """)
     return
 
 
 @app.cell
-def _(iotools):
-    tmy, meta = iotools.get_pvgis_tmy(18.84, -99.24,
-                                      map_variables=True,
-                                      roll_utc_offset=-6,
-                                      coerce_year=2026)
+def _(Path, iotools, pd):
+    URL_TMY = ("https://raw.githubusercontent.com/AltamarMx/"
+               "MiTecho_MisKwh_MiCO2/main/data/tmy/temixco.csv")
+    try:
+        tmy, meta = iotools.get_pvgis_tmy(18.84, -99.24,
+                                          map_variables=True,
+                                          roll_utc_offset=-6,
+                                          coerce_year=2026)
+        fuente_tmy = "PVGIS en vivo"
+    except Exception:
+        _cache = next((str(_r) for _r in [Path("data/tmy/temixco.csv"),
+                                          Path("../data/tmy/temixco.csv")]
+                       if _r.exists()), URL_TMY)
+        tmy = pd.read_csv(_cache, index_col=0, parse_dates=True)
+        meta = {"fuente": _cache}
+        fuente_tmy = f"caché precalculada (`{_cache}`)"
     tmy[["ghi", "dni", "dhi", "temp_air"]].head(3)
-    return meta, tmy
+    return URL_TMY, fuente_tmy, meta, tmy
+
+
+@app.cell
+def _(fuente_tmy, mo):
+    mo.md(f"**Fuente de este TMY**: {fuente_tmy}. Ambas vías dan el mismo año típico.")
+    return
 
 
 @app.cell
